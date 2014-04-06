@@ -5,7 +5,7 @@
 ** Login   <durand_u@epitech.net>
 ** 
 ** Started on  Sat Mar 29 14:41:44 2014 durand_u
-** Last update Sat Apr  5 22:01:51 2014 chalie_a
+** Last update Sun Apr  6 11:43:29 2014 chalie_a
 */
 
 typedef struct		s_room				// Juste une proposition
@@ -25,9 +25,13 @@ typedef struct		s_room				// Juste une proposition
 #define FAILURE		-1
 #define TRUE		1
 #define FALSE		-1
-#define END		5120486
-#define START		846543
-#define RUNNING		6848389
+#define END		5
+#define START		8
+#define RUNNING		6
+
+#define W		&& (printf("WWWWWWWWWWWWWW\n"))
+#define O		&& (printf("OOOOOOOOOOOOO\n"))
+#define Y		&& (printf("YYYYYYYYYYYYYY\n"))
 #define X		printf("XXXXXXXXXXXX\n");
 #define A		printf("AAAAAAAAAAAA\n");
 #define Z		printf("ZZZZZZZZZZZZ\n");
@@ -35,3 +39,5 @@ typedef struct		s_room				// Juste une proposition
 
 char	*gnl(int);
 char	**to_tab(char *, int, char);
+int	get_rooms(t_room *);
+int	fill_list(t_room *, char *);

@@ -13,6 +13,8 @@ CC	=	clang -O3 -g3
 NAME	=	lem-in
 
 SRC	=	src/parsing.c		\
+		src/get_rooms.c		\
+		src/get_x_and_y.c	\
 
 LIB	=	lib/my_strings.c	\
 		lib/gnl.c			\
