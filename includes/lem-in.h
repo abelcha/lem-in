@@ -5,28 +5,44 @@
 ** Login   <durand_u@epitech.net>
 ** 
 ** Started on  Sat Mar 29 14:41:44 2014 durand_u
-** Last update Sun Apr  6 11:43:29 2014 chalie_a
+** Last update Thu Apr 24 10:01:34 2014 chalie_a
 */
+
+typedef struct		s_node
+{
+  struct s_room		*node;
+  struct s_node		*next;
+  struct s_node		*prev;
+}			t_node;
 
 typedef struct		s_room				// Juste une proposition
 {
-  int			*link;			// 1 si il y a un lien, 0 sinon
   int			x;
   int			y;
   char			*name;
   char			*line;
+  struct s_node		*links;
   struct s_room		*next;
   struct s_room		*prev;
-  int			pres;				// Il y a une fourmie dedans ou pas ?
-  int			inc_pres;			// A t'on prévu d'y mettre une fourmie à ce tour ?
 }			t_room;
+
+typedef struct		s_pos
+{
+  t_room		*start;
+  t_room		*end;
+}			t_pos;
+
 
 #define	SUCCESS		1
 #define FAILURE		-1
 #define TRUE		1
 #define FALSE		-1
+#define COMMENT		7
 #define END		5
 #define START		8
+#define DEC		' '
+#define AFF		'-'
+
 #define RUNNING		6
 
 #define W		&& (printf("WWWWWWWWWWWWWW\n"))

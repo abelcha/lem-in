@@ -12,13 +12,13 @@ CC	=	clang -O3 -g3
 
 NAME	=	lem-in
 
-SRC	=	src/parsing.c		\
-		src/get_rooms.c		\
-		src/get_x_and_y.c	\
+SRC	=	src/main.c
+
 
 LIB	=	lib/my_strings.c	\
 		lib/gnl.c			\
-		lib/to_tab.c
+		lib/to_tab.c		\
+		lib/strmatch.c
 
 OBJ	=	$(SRC:.c=.o) $(LIB:.c=.o)
 
