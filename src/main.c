@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Wed Apr 16 22:50:26 2014 chalie_a
-** Last update Thu Apr 24 10:07:34 2014 chalie_a
+** Last update Thu Apr 24 10:50:51 2014 chalie_a
 */
 
 #include <stdio.h>
@@ -47,15 +47,9 @@ int			add_declaration(t_room *room, char *str)
   room->name = stock[0];
   room->x = atoi(stock[1]);
   room->y = atoi(stock[2]);
-  printf("name = %s x = %d y = %d\n", room->name, room->x, room->y);
   return (SUCCESS);
 }
 
-int			link_room(t_room *tmp, t_room *new)
-{
-  printf("IT MATCH\n");
-  return (SUCCESS);
-}
 
 t_room			*find_room(char *str, t_room *root)
 {
@@ -82,8 +76,7 @@ int			add_affectation(char **stock, t_room *root, t_room *new)
     return (FAILURE);
   if (!(r2 = find_room(stock[1], root)))
     return (FAILURE);
-  printf("%s is linked with %s\n", r1->name, r2->name);
-  return (SUCCESS);
+  return (link_room(r1, r2));
 }
 
 
@@ -97,6 +90,19 @@ char			**is_affectation(char *str)
   return (stock);
 }
 
+
+t_node		*init_links()
+{
+  t_node		*root;
+
+  if (!(root = malloc(sizeof(t_node))))
+    return (NULL);
+
+  root->prev = root;
+  root->next = root;
+  return (root);
+}
+
 int			add_elem(t_room *elem, char *str, int type, t_pos *pos)
 {
   t_room		*newelem;
@@ -104,10 +110,11 @@ int			add_elem(t_room *elem, char *str, int type, t_pos *pos)
 
   if ((stock = is_affectation(str)))
     return (add_affectation(stock, elem, newelem));
-
+  printf("type = %d\n", type);
   if (!(newelem = malloc(sizeof(t_room))))
     return (FAILURE);
-
+  if (!(newelem->links = init_links()))
+    return (FAILURE);
   if (type == START)
     pos->start = newelem;
   if (type == END)
@@ -125,9 +132,35 @@ t_room		*init_root()
 
   if (!(root = malloc(sizeof(t_room))))
     return (NULL);
+  root->links = NULL;
   root->prev = root;
   root->next = root;
   return (root);
+}
+
+void		display_node(t_node *root)
+{
+  t_node		*tmp;
+
+  tmp = root;
+  while ((tmp = tmp->next) != root)
+    printf("                             ---> linked with %s\n", tmp->node->name);
+}
+
+void		display_room(t_room *root, t_pos *pos)
+{
+  t_room	*tmp;
+  tmp = root;
+  printf("fourmis nb = %d\n", pos->nb);
+  while ((tmp = tmp->next) != root)
+    {
+      if (tmp == pos->start)
+	printf("START\n");
+      if (tmp == pos->end)
+	printf("END\n");
+      printf("name = %s x = %d y = %d\n", tmp->name, tmp->x, tmp->y);
+      display_node(tmp->links);
+    }
 }
 
 int		main()
@@ -140,6 +173,7 @@ int		main()
 
   prev_type = 42;
   pos = malloc(sizeof(t_pos));
+  pos->nb = atoi(gnl(0));
   root = init_root(); 
   while ((str = gnl(0)))
     {
@@ -149,4 +183,5 @@ int		main()
 	return (FAILURE);
       prev_type = type;
    }
+  display_room(root, pos);
 }

@@ -12,8 +12,8 @@ CC	=	clang -O3 -g3
 
 NAME	=	lem-in
 
-SRC	=	src/main.c
-
+SRC	=	src/main.c\
+		src/link_rooms.c
 
 LIB	=	lib/my_strings.c	\
 		lib/gnl.c			\

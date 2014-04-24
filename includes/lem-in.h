@@ -5,7 +5,7 @@
 ** Login   <durand_u@epitech.net>
 ** 
 ** Started on  Sat Mar 29 14:41:44 2014 durand_u
-** Last update Thu Apr 24 10:01:34 2014 chalie_a
+** Last update Thu Apr 24 10:50:11 2014 chalie_a
 */
 
 typedef struct		s_node
@@ -28,6 +28,7 @@ typedef struct		s_room				// Juste une proposition
 
 typedef struct		s_pos
 {
+  int			nb;
   t_room		*start;
   t_room		*end;
 }			t_pos;
@@ -38,8 +39,8 @@ typedef struct		s_pos
 #define TRUE		1
 #define FALSE		-1
 #define COMMENT		7
-#define END		5
-#define START		8
+#define END		0
+#define START		1
 #define DEC		' '
 #define AFF		'-'
 
