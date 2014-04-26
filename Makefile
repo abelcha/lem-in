@@ -5,15 +5,18 @@
 ## Login   <dong_n@epitech.net>
 ## 
 ## Started on  Mon Mar 17 18:59:53 2014 dong_n
-## Last update Mon Mar 17 23:56:07 2014 
+## Last update Thu Apr 24 22:38:14 2014 chalie_a
 ##
 
-CC	=	clang -O3 -g3
+CC	=	clang -g3 -O3 #-Ofast
 
 NAME	=	lem-in
 
-SRC	=	src/main.c\
-		src/link_rooms.c
+SRC	=	src/main.c			\
+		src/link_rooms.c	\
+		src/add_elem.c		\
+		src/ugly_display.c	\
+		src/bruteforce.c
 
 LIB	=	lib/my_strings.c	\
 		lib/gnl.c			\

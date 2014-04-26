@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Thu Apr 24 10:22:18 2014 chalie_a
-** Last update Thu Apr 24 10:34:52 2014 chalie_a
+** Last update Fri Apr 25 07:05:11 2014 chalie_a
 */
 
 #include <stdio.h>
@@ -23,16 +23,29 @@ int			create_link(t_node *elem, t_room *room)
   newelem->next = elem;
   elem->prev->next = newelem;
   elem->prev = newelem;
+  ++(room->nb_nodes);
   return (SUCCESS);
 }
 
-
-int		link_room(t_room *r1, t_room *r2)
+int		existing_node(t_room *r1, t_room *r2)
 {
-  printf("%s is linked with %s\n", r1->name, r2->name);
-  if (create_link(r1->links, r2) == FAILURE)
-    return (FAILURE);
-  if (create_link(r2->links, r1) == FAILURE)
-    return (FAILURE);
+  t_node	*tmp;
+
+  tmp = r1->links;
+  while ((tmp = tmp->next) != r1->links)
+    if (tmp->node == r2)
+      return (TRUE);
+  return (FALSE);
+}
+
+int		link_node(t_room *r1, t_room *r2)
+{
+  if (r1 != r2 && existing_node(r1, r2) == FALSE)
+    {
+      if (create_link(r1->links, r2) == FAILURE)
+	return (FAILURE);
+      else if (create_link(r2->links, r1) == FAILURE)
+	return (FAILURE);
+    }
   return (SUCCESS);
 }

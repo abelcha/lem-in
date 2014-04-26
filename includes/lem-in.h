@@ -5,7 +5,7 @@
 ** Login   <durand_u@epitech.net>
 ** 
 ** Started on  Sat Mar 29 14:41:44 2014 durand_u
-** Last update Thu Apr 24 10:50:11 2014 chalie_a
+** Last update Sat Apr 26 22:09:35 2014 chalie_a
 */
 
 typedef struct		s_node
@@ -15,12 +15,16 @@ typedef struct		s_node
   struct s_node		*prev;
 }			t_node;
 
-typedef struct		s_room				// Juste une proposition
+typedef struct		s_room
 {
   int			x;
   int			y;
+  int			coeff;
+  int			visited;
+  int			nb_nodes;
+  int			curr_node;
   char			*name;
-  char			*line;
+  struct s_room		*previous;
   struct s_node		*links;
   struct s_room		*next;
   struct s_room		*prev;
@@ -43,7 +47,7 @@ typedef struct		s_pos
 #define START		1
 #define DEC		' '
 #define AFF		'-'
-
+#define DATA		42
 #define RUNNING		6
 
 #define W		&& (printf("WWWWWWWWWWWWWW\n"))
@@ -54,7 +58,13 @@ typedef struct		s_pos
 #define Z		printf("ZZZZZZZZZZZZ\n");
 #define THREE_PARAM(s)	(!s[0] || !s[1] || !s[2] || s[3]) ? FALSE : TRUE
 
+void	display_room(t_room *room, t_pos *pos);
 char	*gnl(int);
 char	**to_tab(char *, int, char);
+int	speed_cmp(char *, char *);
+t_node	*init_link();
+int	link_room(t_room *, t_room *);
+int	link_node(t_room *, t_room *);
+int	add_elem(t_room *, char *, int, t_pos *);
 int	get_rooms(t_room *);
 int	fill_list(t_room *, char *);

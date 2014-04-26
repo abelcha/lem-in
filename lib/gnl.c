@@ -1,113 +1,100 @@
 /*
-** gnl.c for sh in /home/chalie_a/rendu/PSU_2013_minishell2
+** get_next_line.c for Project-Master in /home/tovazm/rendu/42sh/ABEL
 ** 
 ** Made by chalie_a
-** Login   <chalie_a@epitech.eu>
+** Login   <abel@chalier.me>
 ** 
-** Started on  Sun Mar  9 22:55:09 2014 chalie_a
-** Last update Sat Apr  5 17:59:36 2014 chalie_a
+** Started on  Sun Apr 20 17:05:51 2014 chalie_a
+** Last update Thu Apr 24 21:17:19 2014 chalie_a
 */
 
 #include <unistd.h>
-#include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
-#include "get_next_line.h"
+#include "gnl.h"
 
-int	x_free(void *ptr)
+static void		*x_free(void *ptr)
 {
-  if (ptr != NULL)
-    free(ptr);
-  ptr = NULL;
-  return (54);
-}
-
-
-static char	*my_cat(char *s1, char *s2, const int flag)
-{
-  char		*new;
-  int		i;
-  int		j;
-  int		len;
-
-  i = -1;
-  j = -1;
-  if (!s1)
-    return (s2);
-  if (!s2)
-    return (s1);
-  len = strlen(s1) +  strlen(s2);
-  if ((new = calloc((len + 1), sizeof(char))) == NULL)
-    return (NULL);
-  while (s1[++i])
-    new[i] = s1[i];
-  while (s2[++j])
-    new[i + j] = s2[j];
-  if (flag == 1 || flag == 3)
-    x_free(s1);
-  if (flag == 2 || flag == 3)
-    x_free(s2);
-  return (new);
-}
-
-static int	my_strchr(const char *str, const char c)
-{
-  int		i;
-
-  i = 0;
-  while (str[i])
+  if (ptr)
     {
-      if (str[i] == c)
-	return (i);
-      ++i;
+      free(ptr);
+      ptr = NULL;
     }
-  return (EOF);
-}
-
-static int	get_buffer(const int fd, char **str, int cr)
-{
-  static char	*buffer;
-  static int	pos = -1;
-  static int	nb = 0;
-
-  if (pos == -1)
-    {
-      if (!(buffer = calloc((BUF_SIZE + 2), sizeof(char))))
-	return (FAILURE);
-      if ((nb = read(fd, buffer, BUF_SIZE)) == 0 && x_free(buffer))
-	return (END_OF_FILE);
-    }
-  if ((cr = my_strchr(&buffer[++pos], CARRIAGE_RET)) == EOF)
-    {
-      *str = strdup(&buffer[pos]);
-      pos = -1;
-      return (RUNNING);
-    }
-  else
-    {
-      *str = strdup(&buffer[pos]);
-      (*str)[cr] = '\0';
-      pos = pos + cr;
-      return (cr == nb - 1 && (pos = -1) ? x_free(buffer) : END_OF_LINE);
-    }
-}
-
-char		*gnl(int fd)
-{
-  char		*tmp;
-  char		*str;
-  int		status;
-  int		cr;
-
-  cr = 0;
-  tmp = NULL;
-  str = NULL;
-  while ((status = get_buffer(fd, &tmp, cr)) != END_OF_FILE)
-    {
-      str = my_cat(str, tmp, 1);
-      if (status == END_OF_LINE)
-	return (str);
-    }
-  x_free(tmp);
   return (NULL);
 }
+
+static int		copy_data(const char *tmp, char *str)
+{
+  int			j;
+
+  j = -1;
+  if (!tmp)
+    return (0);
+  while (tmp[++j])
+    str[j] = tmp[j];
+  return (j);
+}
+
+static int		my_strchr(const char c, const char *str, const int flag)
+{
+  int			i;
+
+  i = -1;
+  if (!str)
+    return (flag - 1);
+  while (str[++i] || flag)
+    if (str[i] == c)
+      return (i);
+  return (-1);
+}
+
+static char		*reinit_all(char *tmp, const int nb, char *buffer)
+{
+  char			*str;
+  int			i;
+  int			j;
+
+  i = 0;
+  str = calloc(GET_LEN(tmp, buffer), sizeof(char));
+  if (!str)
+    return (x_free(tmp));
+  j = tmp ? copy_data(tmp, str) : 0;
+  x_free(tmp);
+  while (buffer[i] && i < nb)
+    str[j++] = buffer[i++];
+  return (str);
+}
+
+char			*gnl(const int fd)
+{
+  static char		buffer[BUFF_SIZE];
+  static int		nb;
+  char			*str;
+  int			j;
+
+  str = !(*buffer) ? NULL : reinit_all(0, nb, buffer);
+  while ((j = my_strchr('\n', str, 0)) == -1)
+    if ((nb = read(fd, buffer, BUFF_SIZE)) <= 0)
+      return (END(nb, str) ? x_free(str) : str);
+    else if ((str = reinit_all(str, nb, buffer)) == 0)
+      return (x_free(str));
+  nb = 0;
+  while (str[++j])
+    buffer[nb++] = str[j];
+  return ((str[j - nb - 1] = 0) ? NULL : str);
+}
+
+/*
+int		main()
+{
+  char		*str;
+  int		i = -1;
+  while ((str = gnl(0)))
+    {
+       printf("%s\n", str);
+       free(str);
+       //       if (++i > 10000)
+       // break;
+    }
+  //  free(str);
+}
+*/
