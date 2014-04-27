@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Wed Apr 16 22:50:26 2014 chalie_a
-** Last update Sat Apr 26 22:09:30 2014 chalie_a
+** Last update Sun Apr 27 04:03:55 2014 chalie_a
 */
 
 #include <stdio.h>
@@ -30,11 +30,14 @@ int			add_declaration(t_room *room, char *str)
   room->name = stock[0];
   room->x = atoi(stock[1]);
   room->y = atoi(stock[2]);
+  free(stock[1]);
+  free(stock[2]);
+  free(stock);
   return (SUCCESS);
 }
 
-
-t_room			*find_room(char *str, t_room *root)
+/*
+t_room			*find_room(char *str, t_room *lol, t_room *root)
 {
   t_room		*tmp;
 
@@ -46,6 +49,17 @@ t_room			*find_room(char *str, t_room *root)
     }
   printf("error : no such room %s\n", str);
   return (NULL);
+  }*/
+
+
+t_room			*find_room(char *str, t_room *tmp, t_room *root)
+{
+  if (!speed_cmp(str, tmp->name))
+    return (tmp);
+  if ((tmp = tmp->next) != root)
+    return (find_room(str, tmp, root));
+  printf("error : no such room %s\n", str);
+  return (NULL);
 }
 
 int			add_affectation(char **stock, t_room *root, t_room *new)
@@ -55,10 +69,13 @@ int			add_affectation(char **stock, t_room *root, t_room *new)
 
   if (!stock || nb_param(stock, 0) != 2)
     return (FAILURE);
-  if (!(r1 = find_room(stock[0], root)))
+  if (!(r1 = find_room(stock[0], root->next, root)))
     return (FAILURE);
-  if (!(r2 = find_room(stock[1], root)))
+  if (!(r2 = find_room(stock[1], root->next, root)))
     return (FAILURE);
+  free(stock[0]);
+  free(stock[1]);
+  free(stock);
   return (link_node(r1, r2));
 }
 
@@ -80,13 +97,6 @@ void			link_rooms(t_room *elem, t_room *newelem)
   elem->prev = newelem;
 }
 
-void			get_start_and_end(t_pos *pos, int type, t_room *newelem)
-{
- if (type == START)
-    pos->start = newelem;
-  if (type == END)
-    pos->end = newelem; 
-}
 t_node			*init_links()
 {
   t_node		*root;
@@ -112,7 +122,6 @@ int			add_elem(t_room *elem, char *str, int type, t_pos *pos)
   newelem->coeff = 0;
   if (!(newelem->links = init_links()))
     return (FAILURE);
-  get_start_and_end(pos, type, newelem);
   link_rooms(elem, newelem);
   return (add_declaration(newelem, str));
 }

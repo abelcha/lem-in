@@ -5,7 +5,7 @@
 ** Login   <durand_u@epitech.net>
 ** 
 ** Started on  Sat Mar 29 14:41:44 2014 durand_u
-** Last update Sat Apr 26 22:09:35 2014 chalie_a
+** Last update Sun Apr 27 04:09:44 2014 chalie_a
 */
 
 typedef struct		s_node
@@ -32,6 +32,7 @@ typedef struct		s_room
 
 typedef struct		s_pos
 {
+  int			opt;
   int			nb;
   t_room		*start;
   t_room		*end;

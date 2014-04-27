@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Wed Apr 16 22:50:26 2014 chalie_a
-** Last update Sat Apr 26 20:53:24 2014 chalie_a
+** Last update Sun Apr 27 07:05:07 2014 chalie_a
 */
 
 #include <stdio.h>
@@ -26,9 +26,7 @@ int			get_sharp_value(char *str)
 
 int			get_line_type(char *str)
 {
-  if (str[0] == '#')
-    return (str[1] == '#' ? get_sharp_value(&str[1]) : COMMENT);
-  return (DATA);
+  return (str[1] == '#' ? get_sharp_value(&str[1]) : COMMENT);
 }
 
 t_room		*init_root()
@@ -43,31 +41,62 @@ t_room		*init_root()
   return (root);
 }
 
+void		get_start_and_end(t_pos *pos, int type, t_room *newelem)
+{
+  if (type == START)
+    pos->start = newelem;
+  if (type == END)
+    pos->end = newelem; 
+}
+
 int		read_data(t_room *root, t_pos *pos, int prev_type)
 {
 
   int		type;
-   char		*str;
+  char		*str;
 
    if (!(str = gnl(0)))
      return (SUCCESS);
-   if ((type = get_line_type(str)) == FAILURE)
-     return (FAILURE);
+   type = (*str == '#' ? get_line_type(str) : DATA); 
    if (type == DATA && add_elem(root, str, prev_type, pos) == FAILURE)
      return (FAILURE);
+   if (prev_type != DATA)
+     get_start_and_end(pos, prev_type, root->prev);
+   free(str);
    return (read_data(root, pos, type));
 }
 
-int		main()
-{  t_room	*root;
-  t_pos		*pos;
+int		opt(char *str)
+{
+  int		opt;
 
+  if (!str)
+    return (0);
+
+  if (str[0] == '-' && str[1] == 'O')
+    opt = str[2] - '0';
+  if (opt >= 0 && opt <= 4)
+    return (opt);
+  printf("Unreconised option `%s' \n", str); 
+  return (FAILURE);
+}
+
+int		main(int ac, char **av)
+{
+  t_room	*root;
+  t_pos		*pos;
   pos = malloc(sizeof(t_pos));
   pos->start = NULL;
   pos->end = NULL; 
   pos->nb = atoi(gnl(0));
+  if ((pos->opt = opt(av[1])) == FAILURE)
+    return (FAILURE);
   root = init_root();
   read_data(root, pos, DATA);
-  //   display_room(root, pos);
-   random_findpath(root, pos);
+  if (!pos->end || !pos->start)
+    return (FAILURE);
+  if (random_findpath(root, pos) == FAILURE)
+    {
+      printf("ERROR\n");
+    }
 }
