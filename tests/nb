@@ -1,0 +1,21 @@
+src/bruteforce.c:99:    if (get_coeff(root, pos->end, pos->start, ++i) == FAILURE)
+src/bruteforce.c:102:    if (get_coeff(root, pos->start, pos->end, ++i) == FAILURE)
+src/ugly_display.c:27:  printf("fourmis nb = %d\n", pos->nb);
+src/ugly_display.c:30:      if (tmp == pos->start)
+src/ugly_display.c:32:      if (tmp == pos->end)
+src/main.c:47:    pos->start = newelem;
+src/main.c:49:    pos->end = newelem; 
+src/main.c:89:  pos->start = NULL;
+src/main.c:90:  pos->end = NULL; 
+src/main.c:91:  pos->nb = atoi(gnl(0));
+src/main.c:92:  if ((pos->opt = opt(av[1])) == FAILURE)
+src/main.c:96:  if (!pos->end || !pos->start)
+src/start_migration.c:22:  newelem->location = pos->start;
+src/start_migration.c:23:  newelem->previous = pos->start;
+src/start_migration.c:53:      if (tmp->node == pos->end)
+src/start_migration.c:81:      if (tmp->location != pos->end)
+src/start_migration.c:94:  printf("%s == %s\n", pos->start->name, pos->end->name);
+src/start_migration.c:98:  while (++i < pos->nb)
+src/start_migration.c:100:  printf("end  %d == %d\n", pos->end->visited, pos->nb);
+src/start_migration.c:101:  while (pos->end->visited != pos->nb - 1)
+src/start_migration.c:103:      printf("\nnb == %d round %d\n",pos->end->visited, ++j);

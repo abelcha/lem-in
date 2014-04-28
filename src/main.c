@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Wed Apr 16 22:50:26 2014 chalie_a
-** Last update Mon Apr 28 06:09:06 2014 chalie_a
+** Last update Mon Apr 28 07:55:23 2014 chalie_a
 */
 
 #include <stdio.h>
@@ -35,6 +35,7 @@ t_room		*init_root()
 
   if (!(root = malloc(sizeof(t_room))))
     return (NULL);
+  root->name = NULL;
   root->links = NULL;
   root->prev = root;
   root->next = root;

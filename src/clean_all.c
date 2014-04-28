@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Mon Apr 28 05:52:54 2014 chalie_a
-** Last update Mon Apr 28 06:08:39 2014 chalie_a
+** Last update Mon Apr 28 07:55:37 2014 chalie_a
 */
 
 #include <stdlib.h>
@@ -61,13 +61,13 @@ static void	free_rooms(t_room *root)
   tmp = root;
   while ((tmp = tmp->next) != root)
     {
-      x_free(tmp->prev->name);
+      //     x_free(tmp->prev->name);
       free_nodes(tmp->prev->links);
       x_free(tmp->prev);
     }
   x_free(save->name);
   free_nodes(save->links); 
- x_free(save);
+  x_free(save);
 }
 
 void		clean_all(t_room *root, t_pos *pos, t_mouse *mouse)

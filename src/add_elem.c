@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Wed Apr 16 22:50:26 2014 chalie_a
-** Last update Mon Apr 28 06:12:41 2014 chalie_a
+** Last update Mon Apr 28 07:57:50 2014 chalie_a
 */
 
 #include <stdio.h>
@@ -74,8 +74,8 @@ char			**is_affectation(char *str)
     {
       while (stock[++i])
 	free(stock[i]);
-      free(stock);
-      return (NULL);
+      //free(stock);		//GLIBC FUCKIN WHY ?
+      stock = NULL;
     }
   return (stock);
 }
