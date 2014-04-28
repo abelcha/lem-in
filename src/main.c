@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Wed Apr 16 22:50:26 2014 chalie_a
-** Last update Sun Apr 27 07:05:07 2014 chalie_a
+** Last update Mon Apr 28 06:09:06 2014 chalie_a
 */
 
 #include <stdio.h>
@@ -57,6 +57,7 @@ int		read_data(t_room *root, t_pos *pos, int prev_type)
 
    if (!(str = gnl(0)))
      return (SUCCESS);
+   printf("%s\n", str);
    type = (*str == '#' ? get_line_type(str) : DATA); 
    if (type == DATA && add_elem(root, str, prev_type, pos) == FAILURE)
      return (FAILURE);
@@ -72,7 +73,6 @@ int		opt(char *str)
 
   if (!str)
     return (0);
-
   if (str[0] == '-' && str[1] == 'O')
     opt = str[2] - '0';
   if (opt >= 0 && opt <= 4)
@@ -85,10 +85,12 @@ int		main(int ac, char **av)
 {
   t_room	*root;
   t_pos		*pos;
+
   pos = malloc(sizeof(t_pos));
   pos->start = NULL;
   pos->end = NULL; 
   pos->nb = atoi(gnl(0));
+  printf("%d\n", pos->nb);
   if ((pos->opt = opt(av[1])) == FAILURE)
     return (FAILURE);
   root = init_root();
@@ -96,7 +98,5 @@ int		main(int ac, char **av)
   if (!pos->end || !pos->start)
     return (FAILURE);
   if (random_findpath(root, pos) == FAILURE)
-    {
-      printf("ERROR\n");
-    }
+    printf("ERROR\n");
 }

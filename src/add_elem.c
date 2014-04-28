@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Wed Apr 16 22:50:26 2014 chalie_a
-** Last update Sun Apr 27 04:03:55 2014 chalie_a
+** Last update Mon Apr 28 06:12:41 2014 chalie_a
 */
 
 #include <stdio.h>
@@ -35,22 +35,6 @@ int			add_declaration(t_room *room, char *str)
   free(stock);
   return (SUCCESS);
 }
-
-/*
-t_room			*find_room(char *str, t_room *lol, t_room *root)
-{
-  t_room		*tmp;
-
-  tmp = root;
-  while ((tmp = tmp->next) != root)
-    {
-      if (!speed_cmp(str, tmp->name))
-	return (tmp);
-    }
-  printf("error : no such room %s\n", str);
-  return (NULL);
-  }*/
-
 
 t_room			*find_room(char *str, t_room *tmp, t_room *root)
 {
@@ -82,10 +66,17 @@ int			add_affectation(char **stock, t_room *root, t_room *new)
 char			**is_affectation(char *str)
 {
   char			**stock;
+  int			i;
 
+  i = -1;
   stock = to_tab(str, 0, '-');
   if (!stock || nb_param(stock, 0) != 2)
-    return (NULL);
+    {
+      while (stock[++i])
+	free(stock[i]);
+      free(stock);
+      return (NULL);
+    }
   return (stock);
 }
 
@@ -118,8 +109,8 @@ int			add_elem(t_room *elem, char *str, int type, t_pos *pos)
     return (FAILURE);
   newelem->nb_nodes = 0;
   newelem->curr_node = 0;
-  newelem->visited = 0;
   newelem->coeff = 0;
+  newelem->visited = 0;
   if (!(newelem->links = init_links()))
     return (FAILURE);
   link_rooms(elem, newelem);

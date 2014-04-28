@@ -16,7 +16,10 @@ SRC	=	src/main.c			\
 		src/link_rooms.c	\
 		src/add_elem.c		\
 		src/ugly_display.c	\
-		src/bruteforce.c
+		src/bruteforce.c	\
+		src/start_migration.c\
+		src/clean_all.c		\
+		src/rev_br.c
 
 LIB	=	lib/my_strings.c	\
 		lib/gnl.c			\

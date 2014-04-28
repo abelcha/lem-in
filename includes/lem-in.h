@@ -5,7 +5,7 @@
 ** Login   <durand_u@epitech.net>
 ** 
 ** Started on  Sat Mar 29 14:41:44 2014 durand_u
-** Last update Sun Apr 27 04:09:44 2014 chalie_a
+** Last update Mon Apr 28 06:39:21 2014 chalie_a
 */
 
 typedef struct		s_node
@@ -30,6 +30,13 @@ typedef struct		s_room
   struct s_room		*prev;
 }			t_room;
 
+typedef struct		s_save
+{
+  int			nb;
+  char			*room;
+}			t_save;
+
+
 typedef struct		s_pos
 {
   int			opt;
@@ -37,6 +44,15 @@ typedef struct		s_pos
   t_room		*start;
   t_room		*end;
 }			t_pos;
+
+typedef struct		s_mouse
+{
+  int			nb;
+  struct s_room		*location;
+  struct s_room		*previous;
+  struct s_mouse	*prev;
+  struct s_mouse	*next;
+}			t_mouse;
 
 
 #define	SUCCESS		1
@@ -59,6 +75,8 @@ typedef struct		s_pos
 #define Z		printf("ZZZZZZZZZZZZ\n");
 #define THREE_PARAM(s)	(!s[0] || !s[1] || !s[2] || s[3]) ? FALSE : TRUE
 
+int	random_findpath(t_room *, t_pos *);
+int	start_migration(t_room *, t_pos *);
 void	display_room(t_room *room, t_pos *pos);
 char	*gnl(int);
 char	**to_tab(char *, int, char);
