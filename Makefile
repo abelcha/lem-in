@@ -1,16 +1,7 @@
-##
-## Makefile for epur in /home/dong_n/rendu/epur
-## 
-## Made by dong_n
-## Login   <dong_n@epitech.net>
-## 
-## Started on  Mon Mar 17 18:59:53 2014 dong_n
-## Last update Thu Apr 24 22:38:14 2014 chalie_a
-##
 
 CC	=	clang -g3 -O3 #-Ofast
 
-NAME	=	lem-in
+NAME	=	lem_in
 
 SRC	=	src/main.c			\
 		src/link_rooms.c	\
@@ -24,8 +15,9 @@ SRC	=	src/main.c			\
 LIB	=	lib/my_strings.c	\
 		lib/gnl.c			\
 		lib/to_tab.c		\
-		lib/strmatch.c
-
+		lib/strmatch.c		\
+		lib/my_atoi.c		\
+		lib/my_rand.c
 OBJ	=	$(SRC:.c=.o) $(LIB:.c=.o)
 
 CFLAGS	=	-I./includes/	#-W -Wall -Wextra -pedantic

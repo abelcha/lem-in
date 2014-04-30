@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Sun Apr 20 17:05:51 2014 chalie_a
-** Last update Sun Apr 27 23:37:53 2014 chalie_a
+** Last update Mon Apr 28 15:12:22 2014 chalie_a
 */
 
 #include <unistd.h>
@@ -83,18 +83,18 @@ char			*gnl(const int fd)
   return ((str[j - nb - 1] = 0) ? NULL : str);
 }
 
-/*
-int		main()
-{
-  char		*str;
-  int		i = -1;
-  while ((str = gnl(0)))
-    {
-       printf("%s\n", str);
-       free(str);
-       //       if (++i > 10000)
-       // break;
-    }
-  //  free(str);
-}
-*/
+
+/* int		main() */
+/* { */
+/*   char		*str; */
+/*   int		i = -1; */
+/*   while ((str = gnl(0))) */
+/*     { */
+/*        printf("%s\n", str); */
+/*        free(str); */
+/*        //       if (++i > 10000) */
+/*        // break; */
+/*     } */
+/*   //  free(str); */
+/* } */
+

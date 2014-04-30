@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Wed Apr 16 22:50:26 2014 chalie_a
-** Last update Mon Apr 28 07:55:23 2014 chalie_a
+** Last update Mon Apr 28 15:20:56 2014 chalie_a
 */
 
 #include <stdio.h>
@@ -86,11 +86,15 @@ int		main(int ac, char **av)
 {
   t_room	*root;
   t_pos		*pos;
-
+  char		*str;
   pos = malloc(sizeof(t_pos));
   pos->start = NULL;
-  pos->end = NULL; 
-  pos->nb = atoi(gnl(0));
+  pos->end = NULL;
+  str = gnl(0);
+  pos->nb = my_atoi(str);
+  free(str);
+  if (pos->nb <= 0)
+    return (FAILURE);
   printf("%d\n", pos->nb);
   if ((pos->opt = opt(av[1])) == FAILURE)
     return (FAILURE);

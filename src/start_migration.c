@@ -5,12 +5,14 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Sun Apr 27 07:27:25 2014 chalie_a
-** Last update Mon Apr 28 07:38:54 2014 chalie_a
+** Last update Wed Apr 30 02:41:49 2014 chalie_a
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include "lem-in.h"
+
+#define SAVE_BUFF	128
 
 int			recovery_mode;
 
@@ -20,7 +22,7 @@ int			add_mouse(t_mouse *elem, t_pos *pos, int i)
 
   if (!(newelem = malloc(sizeof(t_mouse))))
     return (FAILURE);
-  newelem->nb = i;
+  newelem->nb = i + 1;
   newelem->location = pos->start;
   newelem->previous = pos->start;
   newelem->prev = elem->prev;
@@ -42,6 +44,24 @@ t_mouse			*init_mouse()
   return (root);
 }
 
+t_room		*get_random_node(t_node *tmp, t_node *root, t_room *actual, t_mouse *mouse)
+{
+  t_room	*ret;
+
+  ret = actual;
+  while ((tmp = tmp->next) != root)
+    {
+      if (tmp->node->visited == 0 && tmp->node != actual && 
+	  tmp->node->coeff > 0 && tmp->node != mouse->previous)
+	{
+	  ret = tmp->node;
+	  if (my_rand(0, 10) == 3)
+	    break;
+	}
+    }
+  return (ret);
+}
+
 t_room		*get_next_location(t_node *root, t_room *actual, t_pos *pos, t_mouse *mouse)
 {
   t_node	*tmp;
@@ -49,19 +69,22 @@ t_room		*get_next_location(t_node *root, t_room *actual, t_pos *pos, t_mouse *mo
 
   ret = actual;
   tmp = root;
-  while ((tmp = tmp->next) != root)
-    {
-      if (tmp->node == pos->end &&
+  if (!recovery_mode)
+    while ((tmp = tmp->next) != root)
+      {
+	if (tmp->node == pos->end &&
 	  (actual != pos->start || pos->end->visited == 0))
-	{
+	  {
+	    ret = tmp->node;
+	    break ;
+	  }
+	if (tmp->node->visited == 0 && tmp->node != actual &&
+	    tmp->node->coeff > 0 && tmp->node != mouse->previous)
+	  if (ret == actual || tmp->node->coeff > ret->coeff || recovery_mode)
 	  ret = tmp->node;
-	  break ;
-	}
-      if (tmp->node->visited == 0 && tmp->node != actual &&
-	  tmp->node->coeff > 0 && tmp->node != mouse->previous)
-	if (ret == actual || tmp->node->coeff > ret->coeff || recovery_mode)
-	  ret = tmp->node;
-    }
+      }
+  else
+    ret = get_random_node(tmp, root, actual, mouse);
   mouse->previous = actual;
   actual->visited = 0;
   ++(ret->visited);
@@ -84,25 +107,23 @@ int		watchdog(int *s_nb, char **s_name, t_mouse *mouse, int cpt)
   int		i;
 
   i = -1;
-  while (++i <  10)
-    {
-      if (s_nb[i] == mouse->nb && s_name[i] == mouse->location->name)
-	  return (FAILURE);
-    }
-   return (SUCCESS);
+  while (++i <  SAVE_BUFF)
+    if (s_nb[i] == mouse->nb && s_name[i] == mouse->location->name)
+      return (FAILURE);
+  return (SUCCESS);
 }
 
 int		check_recovery(t_mouse *mouse)
 {
-  static int	s_nb[11];
-  static char	*s_name[11];
+  static int	s_nb[SAVE_BUFF + 1];
+  static char	*s_name[SAVE_BUFF + 1];
   static int	i = -1;
 
-  i = (i + 1 % 10);
+  i = (i + 1 % SAVE_BUFF);
   if (watchdog(s_nb, s_name, mouse, i) == FAILURE)
     return (42);
-  s_nb[i % 10] = mouse->nb;
-  s_name[i % 10] = mouse->location->name;
+  s_nb[i % SAVE_BUFF] = mouse->nb;
+  s_name[i % SAVE_BUFF] = mouse->location->name;
   return (0);
 }
 
@@ -132,17 +153,15 @@ int		start_migration(t_room *root, t_pos *pos)
   recovery_mode = 0;
   if (!(mouse = init_mouse()))
     return (FAILURE);
-  while (i++ < pos->nb)
+  while (++i < pos->nb + 1)
     add_mouse(mouse, pos, i);
-  while (dead < pos->nb)
+  while (dead < pos->nb + 1)
     {
       action_mouse(mouse, mouse->next, pos, 0);
       dead += pos->end->visited;
       printf("\n");
-      ++j;
       pos->end->visited = 0;
-      //usleep(100000);
     }
-    clean_all(root, pos, mouse);
+  clean_all(root, pos, mouse);
   return (SUCCESS);
 }

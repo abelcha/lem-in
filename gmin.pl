@@ -21,7 +21,7 @@ my $home = int(rand($size));
 my $end  = int(rand($size));
 while ($end == $home)
 {
-    my $end  = int(rand($size));
+    my $end  = $home + $size;
 }
 
 print $nb . "\n";

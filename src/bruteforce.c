@@ -5,12 +5,13 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Fri Apr 25 05:17:27 2014 chalie_a
-** Last update Mon Apr 28 01:59:30 2014 chalie_a
+** Last update Wed Apr 30 02:33:49 2014 chalie_a
 */
 
 #include <stdio.h>
 #include "lem-in.h"
 
+static int	g_loop;
 
 t_node		*get_right_node(t_node *tmp, int limit, int i)
 {
@@ -51,16 +52,19 @@ void		remember_path(t_room *start, t_room *end)
 
 int		backtracking(t_room *tmp, t_room *start, t_room *end, int i)
 {
+  int		j;
+
+  j = 0;
    while (tmp != start)
      {
        tmp = get_next_node(tmp->links, tmp, i);
-       if (!tmp)				//tmp == NIL if we explored all possibilities on the root node
+       if (!tmp || ++j > g_loop)       		//tmp == NIL if we explored all possibilities on the root node
 	 {
 	   printf("Impossible map\n");
 	   return (FAILURE);
 	 }
-       // if (tmp == end && tmp->curr_node == tmp->nb_nodes)	//No more possibilities but there's paths
-	    // return (42);
+       if (tmp == end && tmp->curr_node == tmp->nb_nodes)
+	 return (42);
      }
    return (SUCCESS);
 }
@@ -85,6 +89,7 @@ int		get_coeff(t_room *root, t_room *start, t_room *end, int i)
 
 int		reinit_all(t_room *root, t_room *tmp)
 {
+  tmp->previous = NULL;
   tmp->visited = 0;
   tmp->curr_node = 0;
   return (tmp != root ? reinit_all(root, tmp->next) : 0);
@@ -93,16 +98,18 @@ int		reinit_all(t_room *root, t_room *tmp)
 int		random_findpath(t_room *root, t_pos *pos)
 {
   int		i;
-
-    i = 0;
-    if (get_coeff(root, pos->end, pos->start, ++i) == FAILURE)
-      return (FAILURE);
-    reinit_all(root, root->next);
-    i = 0;
-    if (get_coeff(root, pos->start, pos->end, ++i) == FAILURE)
-      return (FAILURE);
-    reinit_all(root, root->next); 
-    //    display_room(root, pos);
-    start_migration(root, pos);   
+  
+  i = 0;
+  g_loop = pos->nb * pos->nb;
+  reinit_all(root, root->next);
+  if (get_coeff(root, pos->end, pos->start, ++i) == FAILURE)
+    return (FAILURE);
+  reinit_all(root, root->next);
+  i = 0;
+  if (get_coeff(root, pos->start, pos->end, ++i) == FAILURE)
+    return (FAILURE);
+  reinit_all(root, root->next); 
+  //  display_room(root, pos);
+  start_migration(root, pos);   
   return (SUCCESS);
 }

@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Wed Apr 16 22:50:26 2014 chalie_a
-** Last update Mon Apr 28 07:57:50 2014 chalie_a
+** Last update Mon Apr 28 13:05:08 2014 chalie_a
 */
 
 #include <stdio.h>
@@ -28,8 +28,8 @@ int			add_declaration(t_room *room, char *str)
    if (!stock || nb_param(stock, 0) != 3)
     return (FAILURE);
   room->name = stock[0];
-  room->x = atoi(stock[1]);
-  room->y = atoi(stock[2]);
+  room->x = my_atoi(stock[1]);
+  room->y = my_atoi(stock[2]);
   free(stock[1]);
   free(stock[2]);
   free(stock);
@@ -74,7 +74,7 @@ char			**is_affectation(char *str)
     {
       while (stock[++i])
 	free(stock[i]);
-      //free(stock);		//GLIBC FUCKIN WHY ?
+      free(stock);		//GLIBC FUCKIN WHY ?
       stock = NULL;
     }
   return (stock);

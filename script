@@ -1,3 +1,0 @@
-rm result;
-./lem-in < $1 | tee result ;
-./moulinette < result;
