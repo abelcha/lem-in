@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Thu May  1 01:03:49 2014 chalie_a
-** Last update Thu May  1 01:53:13 2014 chalie_a
+** Last update Fri May  2 00:47:52 2014 chalie_a
 */
 
 #include <stdio.h>
@@ -18,10 +18,10 @@ void		remember_path(t_room *dest, t_room *tmp)
 
   while (tmp && tmp != dest)
     {
-      tmp->coeff += i++;				// the closest node to the tmp have a bigger coeff
-      save = tmp;					// copy the current ptr (not double linked)
+      tmp->coeff += i++;
+      save = tmp;
       tmp = tmp->previous;
-      save->previous = NULL;				//set the previous pointer to NULL (avoid infinite loop)
+      save->previous = NULL;
     }
 }
 

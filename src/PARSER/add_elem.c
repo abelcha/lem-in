@@ -5,24 +5,20 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Wed Apr 16 22:50:26 2014 chalie_a
-** Last update Thu May  1 10:36:20 2014 chalie_a
+** Last update Fri May  2 01:10:37 2014 chalie_a
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <stdlib.h>
 #include "lem_in.h"
 
-int			nb_param(char **stock, int i)
+static int			nb_param(char **stock, int i)
 {
   return (stock[i] ? nb_param(stock, ++i) : i);
 }
 
-
-int			add_declaration(t_room *room, char *str)
+static int			add_declaration(t_room *room, char *str)
 {
-  char			**stock;
+  char				**stock;
 
   stock = to_tab(str, 0, ' ');
    if (!stock || nb_param(stock, 0) != 3)
@@ -36,54 +32,7 @@ int			add_declaration(t_room *room, char *str)
   return (SUCCESS);
 }
 
-t_room			*find_room(char *str, t_room *tmp, t_room *root)
-{
-  if (!speed_cmp(str, tmp->name))
-    return (tmp);
-  if ((tmp = tmp->next) != root)
-    return (find_room(str, tmp, root));
-  printf("error : no such room %s\n", str);
-  return (NULL);
-}
-
-int			add_affectation(char **stock, t_room *root, t_room *new)
-{
-  t_room		*r1;
-  t_room		*r2;
-
-  if (!stock || nb_param(stock, 0) != 2)
-    return (FAILURE);
-  if (!(r1 = find_room(stock[0], root->next, root)))
-    return (FAILURE);
-  if (!(r2 = find_room(stock[1], root->next, root)))
-    return (FAILURE);
-  x_free(stock[0]);
-  x_free(stock[1]);
-  x_free(stock);
-  return (link_node(r1, r2));
-}
-
-char			**is_affectation(char *str)
-{
-  char			**stock;
-  int			i;
-
-  i = -1;
-  stock = NULL;
-  stock = to_tab(str, 0, '-');
-  if (!stock || nb_param(stock, 0) != 2)
-    {
-      while (stock[++i])
-	x_free(stock[i]);
-      //printf("lol = %p\n", stock);
-   
-      x_free(stock);		//GLIBC FUCKIN WHY ?
-      stock = NULL;
-    }
-  return (stock);
-}
-
-void			link_rooms(t_room *elem, t_room *newelem)
+static void			link_rooms(t_room *elem, t_room *newelem)
 {
   newelem->prev = elem->prev;
   newelem->next = elem;
@@ -91,9 +40,9 @@ void			link_rooms(t_room *elem, t_room *newelem)
   elem->prev = newelem;
 }
 
-t_node			*init_links()
+static t_node			*init_links()
 {
-  t_node		*root;
+  t_node			*root;
 
   if (!(root = calloc(1, sizeof(t_node))))
     return (NULL);
@@ -101,10 +50,10 @@ t_node			*init_links()
   root->next = root;
   return (root);
 }
-int			add_elem(t_room *elem, char *str, int type, t_pos *pos)
+int				add_elem(t_room *elem, char *str)
 {
-  t_room		*newelem;
-  char			**stock;
+  t_room			*newelem;
+  char				**stock;
 
   if ((stock = is_affectation(str)))
     return (add_affectation(stock, elem, newelem));

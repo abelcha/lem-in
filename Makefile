@@ -1,5 +1,5 @@
 
-CC	=	clang -g3 -O3 #-Ofast
+CC	=	gcc -Wall -Wextra #clang -g3 -O3 #-Ofast
 
 NAME	=	lem_in
 
@@ -8,16 +8,18 @@ SRC	=	src/clean_all.c			\
 
 ALGO	=	src/ALGO/grid_workflow.c	\
 		src/ALGO/shared.c		\
-		src/ALGO/ant_ia.c		\
 		src/ALGO/rev_swarm_int.c	\
 		src/ALGO/swarm_int.c
 
 MGR	=	src/MIGRATION/migration_loop.c	\
 		src/MIGRATION/recovery_mode.c	\
-		src/MIGRATION/start_migration.c
+		src/MIGRATION/start_migration.c	\
+		src/MIGRATION/ant_ia.c
 
-PARSER	=	src/PARSER/link_rooms.c		\
-		src/PARSER/add_elem.c		\
+PARSER	=	src/PARSER/add_elem.c		\
+		src/PARSER/affectation.c	\
+		src/PARSER/link_rooms.c		\
+		src/PARSER/read_data.c
 
 LIB	=	lib/my_strings.c		\
 		lib/gnl.c			\

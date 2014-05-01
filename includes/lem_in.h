@@ -5,7 +5,7 @@
 ** Login   <durand_u@epitech.net>
 ** 
 ** Started on  Sat Mar 29 14:41:44 2014 durand_u
-** Last update Thu May  1 11:57:19 2014 chalie_a
+** Last update Fri May  2 01:14:52 2014 chalie_a
 */
 
 #ifndef LEM_IN_H_
@@ -81,6 +81,7 @@ typedef struct		s_ant
 #define X		printf("XXXXXXXXXXXX\n");
 #define A		printf("AAAAAAAAAAAA\n");
 #define Z		printf("ZZZZZZZZZZZZ\n");
+#define SAVE_BUFF	32
 #define _ERROR(...)	fprintf(stderr, __VA_ARGS__) ? -1 : FAILURE
 #define THREE_PARAM(s)	(!s[0] || !s[1] || !s[2] || s[3]) ? FALSE : TRUE
 
@@ -91,14 +92,17 @@ int	get_aco(t_room *, t_room *, t_room *, int);
 int	rev_get_aco(t_room *, t_room *, t_room *, int);
 int	random_findpath(t_room *, t_pos *);
 int	start_migration(t_room *, t_pos *);
+int	migration_loop(t_pos *, t_ia *, t_ant *);
+int	delete_node(t_ant *, t_ant *, t_pos *, t_ia *);
 void	display_room(t_room *room, t_pos *pos);
 char	*gnl(int);
 char	**to_tab(char *, int, char);
 int	speed_cmp(char *, char *);
+int	add_elem(t_room *elem, char *str);
 t_node	*init_link();
 int	link_room(t_room *, t_room *);
 int	link_node(t_room *, t_room *);
-int	add_elem(t_room *, char *, int, t_pos *);
+int	add_elem(t_room *, char *);
 int	get_rooms(t_room *);
 int	fill_list(t_room *, char *);
 

@@ -29,8 +29,9 @@ int	get_aco(t_room *root, t_room *start, t_room *end, int max);
 int	create_link(t_node *elem, t_room *room);
 int	existing_node(t_room *r1, t_room *r2);
 int	link_node(t_room *r1, t_room *r2);
-int	add_ant(t_ant *elem, t_pos *pos, int i);
-t_ant	*init_ant();/*
+
+/*int	add_ant(t_ant *elem, t_pos *pos, int i);
+t_ant	*init_ant();
 int	delete_node(t_ant *root, t_ant *tmp, t_pos *pos, int i);
 int	watchdog(int *s_nb, char **s_name, t_ant *ant, int cpt);
 int	check_recovery(t_ant *ant);

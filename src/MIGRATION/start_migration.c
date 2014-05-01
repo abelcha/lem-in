@@ -5,16 +5,16 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Sun Apr 27 07:27:25 2014 chalie_a
-** Last update Thu May  1 13:36:48 2014 chalie_a
+** Last update Thu May  1 14:46:06 2014 chalie_a
 */
 
-#include <stdio.h>
 #include <stdlib.h>
 #include "lem_in.h"
 
-int			add_ant(t_ant *elem, t_pos *pos, int i)
+static int		add_ant(t_ant *elem, t_pos *pos,
+				const int i)
 {
-  t_ant		*newelem;
+  t_ant			*newelem;
 
   if (!(newelem = calloc(1, sizeof(t_ant))))
     return (FAILURE);
@@ -29,9 +29,9 @@ int			add_ant(t_ant *elem, t_pos *pos, int i)
 }
 
 
-t_ant			*init_ant()
+static t_ant		*init_ant()
 {
-  t_ant		*root;
+  t_ant			*root;
 
   if (!(root = calloc(1, sizeof(t_ant))))
     return (NULL);
@@ -40,10 +40,10 @@ t_ant			*init_ant()
   return (root);
 }
 
-int		start_migration(t_room *root, t_pos *pos)
+int			start_migration(t_room *root, t_pos *pos)
 {
-  t_ant		*ant;
-  t_ia		*ia;
+  t_ant			*ant;
+  t_ia			*ia;
 
   ant = init_ant();
   ia = calloc(1, sizeof(t_ia));

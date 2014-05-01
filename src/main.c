@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Wed Apr 16 22:50:26 2014 chalie_a
-** Last update Thu May  1 13:30:44 2014 chalie_a
+** Last update Fri May  2 01:15:43 2014 chalie_a
 */
 
 #include <stdio.h>
@@ -13,21 +13,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include "lem_in.h"
-
-int			get_sharp_value(char *str)
-{
-  static char	*tab[2] = {"#start", "#end"};
-  int			i;
-
-  i = 2;
-  while (--i >= 0 && !speed_cmp(tab[i], str));
-  return (i);
-}
-
-int			get_line_type(char *str)
-{
-  return (str[1] == '#' ? get_sharp_value(&str[1]) : COMMENT);
-}
 
 t_room		*init_root()
 {
@@ -42,38 +27,12 @@ t_room		*init_root()
   return (root);
 }
 
-void		get_start_and_end(t_pos *pos, int type, t_room *newelem)
-{
-  if (type == START)
-    pos->start = newelem;
-  if (type == END)
-    pos->end = newelem; 
-}
-
-int		read_data(t_room *root, t_pos *pos, int prev_type)
-{
-
-  int		type;
-  char		*str;
-
-   if (!(str = gnl(0)))
-     return (SUCCESS);
-   printf("%s\n", str);
-   type = (*str == '#' ? get_line_type(str) : DATA); 
-   if (type == DATA && add_elem(root, str, prev_type, pos) == FAILURE)
-     return (FAILURE);
-   if (prev_type != DATA)
-     get_start_and_end(pos, prev_type, root->prev);
-   x_free(str);
-   return (read_data(root, pos, type));
-}
-
 int		opt(char *str)
 {
   int		opt;
 
   if (!str)
-    return (2);
+    return (1);
   if (str[0] == '-' && str[1] == 'O')
     opt = str[2] - '0';
   if (opt >= 0 && opt <= 4)
@@ -87,6 +46,7 @@ int		main(int ac, char **av)
   t_pos		*pos;
   char		*str;
 
+  (void)ac;
   pos = calloc(1, sizeof(t_pos));
   str = gnl(0);
   pos->nb = my_atoi(str);
@@ -102,4 +62,5 @@ int		main(int ac, char **av)
     return (_ERROR("Error : Invalid map\n"));
   if (ant_colony_clustering(root, pos) == SUCCESS)
     start_migration(root, pos);
+  return (SUCCESS);
 }
