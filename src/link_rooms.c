@@ -5,12 +5,12 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Thu Apr 24 10:22:18 2014 chalie_a
-** Last update Fri Apr 25 07:05:11 2014 chalie_a
+** Last update Thu May  1 02:33:20 2014 chalie_a
 */
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "lem-in.h"
+#include "lem_in.h"
 
 int			create_link(t_node *elem, t_room *room)
 {

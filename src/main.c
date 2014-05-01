@@ -5,14 +5,14 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Wed Apr 16 22:50:26 2014 chalie_a
-** Last update Mon Apr 28 15:20:56 2014 chalie_a
+** Last update Thu May  1 02:09:08 2014 chalie_a
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdlib.h>
-#include "lem-in.h"
+#include "lem_in.h"
 
 int			get_sharp_value(char *str)
 {
@@ -73,7 +73,7 @@ int		opt(char *str)
   int		opt;
 
   if (!str)
-    return (0);
+    return (2);
   if (str[0] == '-' && str[1] == 'O')
     opt = str[2] - '0';
   if (opt >= 0 && opt <= 4)
@@ -102,6 +102,6 @@ int		main(int ac, char **av)
   read_data(root, pos, DATA);
   if (!pos->end || !pos->start)
     return (FAILURE);
-  if (random_findpath(root, pos) == FAILURE)
-    printf("ERROR\n");
+  if (ant_colony_clustering(root, pos) == SUCCESS)
+    start_migration(root, pos);
 }

@@ -12,7 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdlib.h>
-#include "lem-in.h"
+#include "lem_in.h"
 
 int			nb_param(char **stock, int i)
 {

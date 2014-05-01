@@ -6,11 +6,12 @@ NAME	=	lem_in
 SRC	=	src/main.c			\
 		src/link_rooms.c	\
 		src/add_elem.c		\
-		src/ugly_display.c	\
-		src/bruteforce.c	\
+		src/swarm_int.c		\
+		src/rev_swarm_int.c	\
+		src/grid_workflow.c	\
 		src/start_migration.c\
-		src/clean_all.c		\
-		src/rev_br.c
+		src/shared.c		\
+		src/clean_all.c	
 
 LIB	=	lib/my_strings.c	\
 		lib/gnl.c			\
@@ -18,6 +19,7 @@ LIB	=	lib/my_strings.c	\
 		lib/strmatch.c		\
 		lib/my_atoi.c		\
 		lib/my_rand.c
+
 OBJ	=	$(SRC:.c=.o) $(LIB:.c=.o)
 
 CFLAGS	=	-I./includes/	#-W -Wall -Wextra -pedantic

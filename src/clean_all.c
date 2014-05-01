@@ -9,7 +9,7 @@
 */
 
 #include <stdlib.h>
-#include "lem-in.h"
+#include "lem_in.h"
 
 static int	x_free(void *ptr)
 {
@@ -35,10 +35,10 @@ static void	free_nodes(t_node *root)
   x_free(save);
 }
 
-static void	free_mouses(t_mouse *root)
+static void	free_ants(t_ant *root)
 {
-  t_mouse	*tmp;
-  t_mouse	*save;
+  t_ant	*tmp;
+  t_ant	*save;
 
   if (!root)
     return ;
@@ -70,9 +70,9 @@ static void	free_rooms(t_room *root)
   x_free(save);
 }
 
-void		clean_all(t_room *root, t_pos *pos, t_mouse *mouse)
+void		clean_all(t_room *root, t_pos *pos, t_ant *ant)
 {
-  free_mouses(mouse);
+  free_ants(ant);
   free(pos);
   free_rooms(root);
 }

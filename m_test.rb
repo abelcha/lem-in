@@ -27,7 +27,7 @@ while (42)
   ants[2] = (rand(10000)) % (1 + ants[1].to_i - ants[0].to_i) + ants[0].to_i
   puts "Test #{i.to_s}, rooms = #{room[2].to_s}, density = #{density[2].to_s}, ants = #{ants[2].to_s}".bg_brown
   system("./generator.pl #{room[2]} #{density[2]} #{ants[2]} > tmp")
-  system("cat tmp | ./lem_in")
+  system("cat tmp | ./lem_in | ./moulinette")
   if ($?.to_i == 0)
     puts "Test succeed !".bg_green
   elsif ($?.to_i == 2)

@@ -9,18 +9,12 @@ ants = []
 i = 0
 
 system("rm -f ./err/*")
-print "Choose the smallest value of rooms : "
-room[0] = gets.to_i.abs
-print "Choose the biggest value of rooms : "
-room[1] = gets.to_i.abs
-print "Choose the smallest value of density : "
-density[0] = gets.to_i.abs
-print "Choose the biggest value of density : "
-density[1] = gets.to_i.abs
-print "Choose the smallest value of ants : "
-ants[0] = gets.to_i.abs
-print "Choose the biggest value of ants : "
-ants[1] = gets.to_i.abs
+room[0] = 10
+room[1] = 500
+density[0] = 1
+density[1] = 100
+ants[0] = 100
+ants[1] = 1000
 while (42)
   room[2] = (rand(10000)) % (2 + room[1].to_i - room[0].to_i) + room[0].to_i
   density[2] = (rand(10000)) % (5 + density[1].to_i - density[0].to_i) + density[0].to_i

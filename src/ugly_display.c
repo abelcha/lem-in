@@ -9,7 +9,7 @@
 */
 
 #include <stdio.h>
-#include "lem-in.h"
+#include "lem_in.h"
 
 void		display_node(t_node *root)
 {
