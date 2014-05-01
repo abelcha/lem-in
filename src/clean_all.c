@@ -5,21 +5,11 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Mon Apr 28 05:52:54 2014 chalie_a
-** Last update Mon Apr 28 15:18:29 2014 chalie_a
+** Last update Thu May  1 10:34:04 2014 chalie_a
 */
 
 #include <stdlib.h>
 #include "lem_in.h"
-
-static int	x_free(void *ptr)
-{
-  if (ptr)
-    {
-      free(ptr);
-      ptr = NULL;
-    }
-  return (42);
-}
 
 static void	free_nodes(t_node *root)
 {
@@ -73,6 +63,6 @@ static void	free_rooms(t_room *root)
 void		clean_all(t_room *root, t_pos *pos, t_ant *ant)
 {
   free_ants(ant);
-  free(pos);
+  x_free(pos);
   free_rooms(root);
 }

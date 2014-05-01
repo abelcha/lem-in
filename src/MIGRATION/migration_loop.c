@@ -1,0 +1,54 @@
+/*
+** start_migration.c for Project-Master in /home/tovazm/rendu/lem-in
+** 
+** Made by chalie_a
+** Login   <abel@chalier.me>
+** 
+** Started on  Sun Apr 27 07:27:25 2014 chalie_a
+** Last update Thu May  1 13:52:54 2014 chalie_a
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "lem_in.h"
+
+int		delete_node(t_ant *root, t_ant *tmp, t_pos *pos, t_ia *ia)
+{
+  t_ant		*save;
+
+  save = tmp->next;
+  tmp->prev->next = tmp->next;
+  tmp->next->prev = tmp->prev;
+  x_free(tmp);
+  return (action_ant(root, save, pos, ia));
+}
+
+
+int		action_ant(t_ant *root, t_ant *tmp, t_pos *pos, t_ia *ia)
+{
+  if (tmp == root)
+    return (printf("\n"));
+  if (tmp->location == pos->end)
+    return (delete_node(root, tmp, pos, ia));
+  tmp->location = get_next_location(pos, tmp, ia);
+  if (ia->curr_loop == 0)
+    ia->recovery_mode = check_recovery(tmp);
+  if (tmp->location != tmp->previous)
+    printf(ia->curr_loop == 0 ? "P%d-%s" : " P%d-%s",
+	   tmp->nb, tmp->location->name);
+  (ia->curr_loop)++;
+  return (action_ant(root, tmp->next, pos, ia));
+}
+
+int		migration_loop(t_pos *pos, t_ia *ia, t_ant *ant)
+{
+  while (ia->arrived < pos->nb + 1 && ++(ia->tt_loop) < ant->nb)
+    {
+      pos->end->visited = 0;
+      ia->curr_loop = 0;
+      if (action_ant(ant, ant->next, pos, ia) == FAILURE)
+	return (FAILURE);
+      ia->arrived += pos->end->visited;
+    }
+  return (SUCCESS);
+}

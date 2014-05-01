@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Wed Apr 16 22:50:26 2014 chalie_a
-** Last update Thu May  1 02:09:08 2014 chalie_a
+** Last update Thu May  1 13:30:44 2014 chalie_a
 */
 
 #include <stdio.h>
@@ -64,7 +64,7 @@ int		read_data(t_room *root, t_pos *pos, int prev_type)
      return (FAILURE);
    if (prev_type != DATA)
      get_start_and_end(pos, prev_type, root->prev);
-   free(str);
+   x_free(str);
    return (read_data(root, pos, type));
 }
 
@@ -78,8 +78,7 @@ int		opt(char *str)
     opt = str[2] - '0';
   if (opt >= 0 && opt <= 4)
     return (opt);
-  printf("Unreconised option `%s' \n", str); 
-  return (FAILURE);
+  return (_ERROR("Unreconised option `%s' \n", str));
 }
 
 int		main(int ac, char **av)
@@ -87,21 +86,20 @@ int		main(int ac, char **av)
   t_room	*root;
   t_pos		*pos;
   char		*str;
-  pos = malloc(sizeof(t_pos));
-  pos->start = NULL;
-  pos->end = NULL;
+
+  pos = calloc(1, sizeof(t_pos));
   str = gnl(0);
   pos->nb = my_atoi(str);
-  free(str);
+  x_free(str);
   if (pos->nb <= 0)
-    return (FAILURE);
+    return (_ERROR("Error : Invalid ant number.\n"));
   printf("%d\n", pos->nb);
   if ((pos->opt = opt(av[1])) == FAILURE)
     return (FAILURE);
   root = init_root();
   read_data(root, pos, DATA);
-  if (!pos->end || !pos->start)
-    return (FAILURE);
+  if (!pos->end || !pos->start || !pos->start->name || !pos->end->name)
+    return (_ERROR("Error : Invalid map\n"));
   if (ant_colony_clustering(root, pos) == SUCCESS)
     start_migration(root, pos);
 }

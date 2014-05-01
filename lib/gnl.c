@@ -5,14 +5,14 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Sun Apr 20 17:05:51 2014 chalie_a
-** Last update Mon Apr 28 15:12:22 2014 chalie_a
+** Last update Thu May  1 10:18:45 2014 chalie_a
 */
 
 #include <unistd.h>
 #include <stdlib.h>
 #include "gnl.h"
 
-static void		*x_free(void *ptr)
+static void		*z_free(void *ptr)
 {
   if (ptr)
     {
@@ -56,9 +56,9 @@ static char		*reinit_all(char *tmp, const int nb, char *buffer)
   i = 0;
   str = calloc(GET_LEN(tmp, buffer), sizeof(char));
   if (!str)
-    return (x_free(tmp));
+    return (z_free(tmp));
   j = tmp ? copy_data(tmp, str) : 0;
-  x_free(tmp);
+  z_free(tmp);
   while (buffer[i] && i < nb)
     str[j++] = buffer[i++];
   return (str);
@@ -74,27 +74,11 @@ char			*gnl(const int fd)
   str = !(*buffer) ? NULL : reinit_all(0, nb, buffer);
   while ((j = my_strchr('\n', str, 0)) == -1)
     if ((nb = read(fd, buffer, BUFF_SIZE)) <= 0)
-      return (END(nb, str) ? x_free(str) : str);
+      return (END(nb, str) ? z_free(str) : str);
     else if ((str = reinit_all(str, nb, buffer)) == 0)
-      return (x_free(str));
+      return (z_free(str));
   nb = 0;
   while (str[++j])
     buffer[nb++] = str[j];
   return ((str[j - nb - 1] = 0) ? NULL : str);
 }
-
-
-/* int		main() */
-/* { */
-/*   char		*str; */
-/*   int		i = -1; */
-/*   while ((str = gnl(0))) */
-/*     { */
-/*        printf("%s\n", str); */
-/*        free(str); */
-/*        //       if (++i > 10000) */
-/*        // break; */
-/*     } */
-/*   //  free(str); */
-/* } */
-

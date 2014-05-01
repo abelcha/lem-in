@@ -10,11 +10,11 @@ i = 0
 
 system("rm -f ./err/*")
 room[0] = 10
-room[1] = 500
+room[1] = 20
 density[0] = 1
 density[1] = 100
-ants[0] = 100
-ants[1] = 1000
+ants[0] = 10
+ants[1] = 100
 while (42)
   room[2] = (rand(10000)) % (2 + room[1].to_i - room[0].to_i) + room[0].to_i
   density[2] = (rand(10000)) % (5 + density[1].to_i - density[0].to_i) + density[0].to_i

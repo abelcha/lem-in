@@ -5,7 +5,7 @@
 ** Login   <durand_u@epitech.net>
 ** 
 ** Started on  Sat Mar 29 14:41:44 2014 durand_u
-** Last update Thu May  1 01:38:48 2014 chalie_a
+** Last update Thu May  1 11:57:19 2014 chalie_a
 */
 
 #ifndef LEM_IN_H_
@@ -35,6 +35,16 @@ typedef struct		s_room
   struct s_room		*prev;
 }			t_room;
 
+typedef struct		s_ia
+{
+  int			arrived;
+  int			tt_ant;
+  int			tt_loop;
+  int			curr_loop;
+  int			recovery_mode;
+}			t_ia;
+
+
 typedef struct		s_pos
 {
   int			opt;
@@ -48,8 +58,8 @@ typedef struct		s_ant
   int			nb;
   struct s_room		*location;
   struct s_room		*previous;
-  struct s_ant	*prev;
-  struct s_ant	*next;
+  struct s_ant		*prev;
+  struct s_ant		*next;
 }			t_ant;
 
 
@@ -71,11 +81,14 @@ typedef struct		s_ant
 #define X		printf("XXXXXXXXXXXX\n");
 #define A		printf("AAAAAAAAAAAA\n");
 #define Z		printf("ZZZZZZZZZZZZ\n");
-#define _ERROR(s)	fprintf(stderr, s) ? -1 : FAILURE
+#define _ERROR(...)	fprintf(stderr, __VA_ARGS__) ? -1 : FAILURE
 #define THREE_PARAM(s)	(!s[0] || !s[1] || !s[2] || s[3]) ? FALSE : TRUE
 
 #include "prototypes.h"
 
+int	x_free(void *ptr);
+int	get_aco(t_room *, t_room *, t_room *, int);
+int	rev_get_aco(t_room *, t_room *, t_room *, int);
 int	random_findpath(t_room *, t_pos *);
 int	start_migration(t_room *, t_pos *);
 void	display_room(t_room *room, t_pos *pos);
