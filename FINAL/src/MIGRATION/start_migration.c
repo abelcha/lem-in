@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Sun Apr 27 07:27:25 2014 chalie_a
-** Last update Thu May  1 14:46:06 2014 chalie_a
+** Last update Fri May  2 09:57:31 2014 chalie_a
 */
 
 #include <stdlib.h>
@@ -28,7 +28,6 @@ static int		add_ant(t_ant *elem, t_pos *pos,
   return (SUCCESS);
 }
 
-
 static t_ant		*init_ant()
 {
   t_ant			*root;
@@ -49,7 +48,8 @@ int			start_migration(t_room *root, t_pos *pos)
   ia = calloc(1, sizeof(t_ia));
   if (!ant || !ia)
     return (FAILURE);
-  while (ia->tt_ant++ < pos->nb + 1)
+  ia->tt_ant = -1;
+  while (++ia->tt_ant < pos->nb)
     add_ant(ant, pos, ia->tt_ant);
   ant->nb = pos->nb * ia->tt_ant;
   migration_loop(pos, ia, ant);

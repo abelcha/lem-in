@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Thu Apr 24 10:22:18 2014 chalie_a
-** Last update Fri May  2 00:02:42 2014 chalie_a
+** Last update Fri May  2 09:30:37 2014 chalie_a
 */
 
 #include <stdlib.h>
@@ -26,10 +26,10 @@ static int			create_link(t_node *elem, t_room *room)
   return (SUCCESS);
 }
 
-static int    			existing_node(const t_room *r1,
+static int			existing_node(const t_room *r1,
 					      const t_room *r2)
 {
-  t_node	       		*tmp;
+  t_node			*tmp;
 
   tmp = r1->links;
   while ((tmp = tmp->next) != r1->links)

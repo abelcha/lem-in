@@ -5,7 +5,7 @@
 ** Login   <chalie_a@epitech.eu>
 ** 
 ** Started on  Sat Dec 28 05:44:46 2013 chalie_a
-** Last update Mon Apr 28 13:40:26 2014 chalie_a
+** Last update Fri May  2 09:46:51 2014 chalie_a
 */
 
 #include <stdlib.h>
@@ -26,7 +26,8 @@ char	**to_tab(char *s, int cpt, char sep)
   tab = (s[j] == '\0' ? calloc((cpt + 10), sizeof(char *)) : NULL);
   if (s[j] != '\0')
     tab = to_tab(&s[len], cpt + 1, sep);
-  tab[cpt] = calloc(((len - i) + 10), sizeof(char));
+  if (!(tab[cpt] = calloc(((len - i) + 10), sizeof(char))))
+    return (NULL);
   j = 0;
   while (i < len && (tab[cpt][j++] = s[i++]));
   return (tab);

@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Wed Apr 16 22:50:26 2014 chalie_a
-** Last update Fri May  2 01:15:43 2014 chalie_a
+** Last update Fri May  2 09:52:37 2014 chalie_a
 */
 
 #include <stdio.h>
@@ -31,13 +31,14 @@ int		opt(char *str)
 {
   int		opt;
 
+  opt = 1;
   if (!str)
-    return (1);
+    return (opt);
   if (str[0] == '-' && str[1] == 'O')
     opt = str[2] - '0';
   if (opt >= 0 && opt <= 4)
     return (opt);
-  return (_ERROR("Unreconised option `%s' \n", str));
+  return (_ERROR(INV_OPT));
 }
 
 int		main(int ac, char **av)
@@ -52,14 +53,14 @@ int		main(int ac, char **av)
   pos->nb = my_atoi(str);
   x_free(str);
   if (pos->nb <= 0)
-    return (_ERROR("Error : Invalid ant number.\n"));
+    return (_ERROR(INV_NB));
   printf("%d\n", pos->nb);
   if ((pos->opt = opt(av[1])) == FAILURE)
     return (FAILURE);
   root = init_root();
   read_data(root, pos, DATA);
   if (!pos->end || !pos->start || !pos->start->name || !pos->end->name)
-    return (_ERROR("Error : Invalid map\n"));
+    return (_ERROR(INV_MAP));
   if (ant_colony_clustering(root, pos) == SUCCESS)
     start_migration(root, pos);
   return (SUCCESS);

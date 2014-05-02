@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Sun Apr 27 07:27:25 2014 chalie_a
-** Last update Fri May  2 00:03:15 2014 chalie_a
+** Last update Fri May  2 09:32:49 2014 chalie_a
 */
 
 #include <stdio.h>
@@ -26,7 +26,6 @@ static int		action_ant(t_ant *root, t_ant *tmp,
 	   tmp->nb, tmp->location->name);
   return (action_ant(root, tmp->next, pos, ia));
 }
-
 
 int			delete_node(t_ant *root, t_ant *tmp,
 				    t_pos *pos, t_ia *ia)

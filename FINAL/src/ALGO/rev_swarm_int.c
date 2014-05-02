@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Thu May  1 01:04:05 2014 chalie_a
-** Last update Fri May  2 01:08:50 2014 chalie_a
+** Last update Fri May  2 09:53:34 2014 chalie_a
 */
 
 #include <stdio.h>
@@ -20,7 +20,7 @@ static t_room		*rev_get_next_node(const t_node *root, t_room *actual,
 					   const int row)
 {
   t_node		*tmp;
- 
+
   if (actual->curr_node == actual->nb_nodes)
     return (actual->previous);
   tmp = rev_get_right_node(root->prev, ++actual->curr_node, 0);
@@ -42,7 +42,7 @@ static int		rev_get_paths(t_room *tmp, const t_room *start,
   ++cpt;
   while (tmp != start)
     if (!(tmp = rev_get_next_node(tmp->links, tmp, cpt)))
-      return (_ERROR("Error : Impossible map\n"));
+      return (_ERROR(INV_MAP));
     else if ((tmp == end && tmp->curr_node == tmp->nb_nodes) || --max <= 0)
       return (42);
    return (SUCCESS);

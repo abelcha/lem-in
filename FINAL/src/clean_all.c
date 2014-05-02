@@ -5,16 +5,16 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Mon Apr 28 05:52:54 2014 chalie_a
-** Last update Thu May  1 10:34:04 2014 chalie_a
+** Last update Fri May  2 09:21:51 2014 chalie_a
 */
 
 #include <stdlib.h>
 #include "lem_in.h"
 
-static void	free_nodes(t_node *root)
+static void		free_nodes(t_node *root)
 {
-  t_node	*tmp;
-  t_node	*save;
+  t_node		*tmp;
+  t_node		*save;
 
   if (!root)
     return ;
@@ -25,10 +25,10 @@ static void	free_nodes(t_node *root)
   x_free(save);
 }
 
-static void	free_ants(t_ant *root)
+static void		free_ants(t_ant *root)
 {
-  t_ant	*tmp;
-  t_ant	*save;
+  t_ant			*tmp;
+  t_ant			*save;
 
   if (!root)
     return ;
@@ -39,11 +39,10 @@ static void	free_ants(t_ant *root)
   x_free(save);
 }
 
-
-static void	free_rooms(t_room *root)
+static void		free_rooms(t_room *root)
 {
-  t_room	*tmp;
-  t_room	*save;
+  t_room		*tmp;
+  t_room		*save;
 
   if (!root)
     return ;
@@ -56,11 +55,11 @@ static void	free_rooms(t_room *root)
       x_free(tmp->prev);
     }
   x_free(save->name);
-  free_nodes(save->links); 
+  free_nodes(save->links);
   x_free(save);
 }
 
-void		clean_all(t_room *root, t_pos *pos, t_ant *ant)
+void			clean_all(t_room *root, t_pos *pos, t_ant *ant)
 {
   free_ants(ant);
   x_free(pos);

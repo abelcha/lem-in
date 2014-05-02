@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Wed Apr 16 22:50:26 2014 chalie_a
-** Last update Fri May  2 01:10:37 2014 chalie_a
+** Last update Fri May  2 08:00:44 2014 chalie_a
 */
 
 #include <stdlib.h>
@@ -56,7 +56,7 @@ int				add_elem(t_room *elem, char *str)
   char				**stock;
 
   if ((stock = is_affectation(str)))
-    return (add_affectation(stock, elem, newelem));
+    return (add_affectation(stock, elem/*, newelem*/));
   if (!(newelem = calloc(1, sizeof(t_room))))
     return (FAILURE);
   if (!(newelem->links = init_links()))

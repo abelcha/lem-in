@@ -1,5 +1,14 @@
+## 
+## Makefile for lem_in in /home/chalie_a/rendu/lem-in
+## 
+## Made by chalie_a
+## Login   <chalie_a@epitech.eu>
+## 
+## Started on  Sun Jan  5 08:34:59 2014 chalie_a
+## Last update Fri May  2 09:17:12 2014 chalie_a
+##
 
-CC	=	gcc -Wall -Wextra #clang -g3 -O3 #-Ofast
+CC	=	gcc -Ofast
 
 NAME	=	lem_in
 
@@ -21,8 +30,7 @@ PARSER	=	src/PARSER/add_elem.c		\
 		src/PARSER/link_rooms.c		\
 		src/PARSER/read_data.c
 
-LIB	=	lib/my_strings.c		\
-		lib/gnl.c			\
+LIB	=	lib/gnl.c			\
 		lib/to_tab.c			\
 		lib/strmatch.c			\
 		lib/my_atoi.c			\
@@ -31,7 +39,7 @@ LIB	=	lib/my_strings.c		\
 
 OBJ	=	$(SRC:.c=.o) $(LIB:.c=.o) $(PARSER:.c=.o) $(MGR:.c=.o) $(ALGO:.c=.o)
 
-CFLAGS	=	-I./includes/	#-W -Wall -Wextra -pedantic
+CFLAGS	=	-I./includes/ -W -Wall -Wextra -ansi
 
 RM	=	rm -fr
 

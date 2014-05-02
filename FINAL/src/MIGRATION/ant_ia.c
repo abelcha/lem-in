@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Sun Apr 27 07:27:25 2014 chalie_a
-** Last update Fri May  2 01:09:34 2014 chalie_a
+** Last update Fri May  2 09:32:33 2014 chalie_a
 */
 
 #include "lem_in.h"
@@ -25,7 +25,7 @@ static t_room		*get_random_node(t_node *tmp,
 					 const t_ant *ant)
 {
   t_room		*ret;
-  
+
   ret = ant->location;
   while ((tmp = tmp->next) != ant->location->links)
     if (is_legit(tmp->node, ant) == TRUE && (ret = tmp->node))

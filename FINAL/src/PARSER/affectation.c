@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Wed Apr 16 22:50:26 2014 chalie_a
-** Last update Fri May  2 01:12:56 2014 chalie_a
+** Last update Fri May  2 09:51:53 2014 chalie_a
 */
 
 #include <stdio.h>
@@ -24,11 +24,11 @@ static t_room			*find_room(char *str, t_room *tmp,
     return (tmp);
   if ((tmp = tmp->next) != root)
     return (find_room(str, tmp, root));
-  fprintf(stderr, "error : no such room %s\n", str);
+  _ERROR(INV_ROOM);
   return (NULL);
 }
 
-int			add_affectation(char **stock, t_room *root)
+int				add_affectation(char **stock, t_room *root)
 {
   t_room			*r1;
   t_room			*r2;
@@ -45,7 +45,7 @@ int			add_affectation(char **stock, t_room *root)
   return (link_node(r1, r2));
 }
 
-char			**is_affectation(char *str)
+char				**is_affectation(char *str)
 {
   char				**stock;
   int				i;

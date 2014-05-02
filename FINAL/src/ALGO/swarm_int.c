@@ -5,13 +5,13 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Thu May  1 01:04:05 2014 chalie_a
-** Last update Fri May  2 01:08:15 2014 chalie_a
+** Last update Fri May  2 09:53:15 2014 chalie_a
 */
 
 #include <stdio.h>
 #include "lem_in.h"
 
-static t_node			*get_right_node(t_node *tmp, int limit, int i)
+static t_node		*get_right_node(t_node *tmp, int limit, int i)
 {
   return (i < limit - 1 ? get_right_node(tmp->next, limit, ++i) : tmp);
 }
@@ -20,7 +20,7 @@ static t_room		*get_next_node(const t_node *root, t_room *actual,
 				       const int row)
 {
   t_node		*tmp;
- 
+
   if (actual->curr_node == actual->nb_nodes)
     return (actual->previous);
   tmp = get_right_node(root->next, ++actual->curr_node, 0);
@@ -42,7 +42,7 @@ static int		get_paths(t_room *tmp, const t_room *start,
   ++cpt;
   while (tmp != start)
     if (!(tmp = get_next_node(tmp->links, tmp, cpt)))
-      return (_ERROR("Error : Impossible map\n"));
+      return (_ERROR(IMP_MAP));
     else if ((tmp == end && tmp->curr_node == tmp->nb_nodes) || --max <= 0)
       return (42);
    return (SUCCESS);
