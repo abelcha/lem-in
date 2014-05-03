@@ -14,11 +14,12 @@ static const GLfloat	mat_diffuse[] = {0.8f, 0.8f, 0.8f, 1.0f};
 static const GLfloat	mat_specular[] = {1.0f, 1.0f, 1.0f, 1.0f};
 static const GLfloat	high_shininess[] = {100.0f};
 
-# define ROW	40
-# define MOD    40
+# define ROW	200
+# define MOD    p->nb * 2
 
 
 t_room		*root;
+t_pos		*p;
 int		window;
 float		xpos = 0;
 float		ypos = 0;
@@ -45,6 +46,49 @@ void reshape(int w, int h)
   glMatrixMode(GL_MODELVIEW);
 }
 
+void drawPipeD(float x1,float y1, float z1, float x2, float y2, float z2)
+{
+  float a1,a2,a3; // mogen niet 0 worden -> exceptie!
+  float o1,o2,o3;
+  float pipeLenght;
+
+  o1= x2-x1;
+  o2= y2-y1;
+  o3= z2-z1;
+  pipeLenght = sqrt(o1*o1+o2*o2+o3*o3);
+  o1=o1/pipeLenght;// normalize
+  o2=o2/pipeLenght;
+  o3=o3/pipeLenght;
+  a1 = o1; // normalized cylinder vector + normalized target vector
+  a2 = o2;
+  a3 = 1+o3;
+
+  if ((a1 == 0.0) && (a2 == 0.0) && (a3 == 0.0) )// exception!
+    a1 = 1;
+
+  GLUquadricObj *cylinder1;
+
+  cylinder1 = gluNewQuadric();
+  gluQuadricDrawStyle(cylinder1, GLU_LINE);
+
+  glColor3d(0,0,1);
+  glPushMatrix();
+  glTranslated(x1,y1,z1);
+  glRotatef(180,a1,a2,a3);
+  gluCylinder(cylinder1,0.1,0.1,pipeLenght,10,1);
+  glPopMatrix();
+  // draw endpoints
+  glPushMatrix();
+  glTranslated(x1,y1,z1);
+  glutSolidSphere(0.3,12,12);
+  glPopMatrix();
+
+  glPushMatrix();
+  glTranslated(x2,y2,z2);
+  glutSolidSphere(0.3,12,12);  
+  glPopMatrix();
+}
+
 void		draw_cylindre(GLUquadric *quadric, t_room *tmp)
 {
   int	i = 0;
@@ -55,9 +99,9 @@ void		draw_cylindre(GLUquadric *quadric, t_room *tmp)
   float	x;
   float	y;
  
-  /* renderCy((float)tmp->x, (float)tmp->y, (float)tmp->z, (float)tmp->prev->x, 
-	   (float)tmp->prev->y, (float)tmp->prev->z, 100, 100);
-	   return ;*/
+  drawPipeD((float)tmp->x, (float)tmp->y, (float)tmp->z, (float)tmp->prev->x, 
+	    (float)tmp->prev->y, (float)tmp->prev->z);
+	   return ;
   z_p = ((float)tmp->prev->z - (float)tmp->z) / ROW;
   x_p = ((float)tmp->prev->x - (float)tmp->x) / ROW;
   y_p = ((float)tmp->prev->y - (float)tmp->y) / ROW;
@@ -69,11 +113,12 @@ void		draw_cylindre(GLUquadric *quadric, t_room *tmp)
       glPushMatrix();
       glTranslated(x, y, z);
       glColor4d(165.0, 82.0, 76.0, 0.0);
-      gluQuadricDrawStyle(quadric, GLU_POINT);
+      gluQuadricDrawStyle(quadric, GLU_FILL);
       //gluCylinder(quadric, 2, 2, 10, 20, 20);
       //gluDisk(quadric, 0.1, 0.3, 10, 10);
-      // gluSphere(quadric, 0.1, 10, 10);
-      gluCylinder(quadric, 1, 2, 1, 2, 20);
+      if (i % 3 != 0)
+       gluSphere(quadric, 0.1, 10, 10);
+      //gluCylinder(quadric, 1, 2, 1, 2, 20);
       glPopMatrix();
       x = x + x_p;
       y = y + y_p;
@@ -81,13 +126,22 @@ void		draw_cylindre(GLUquadric *quadric, t_room *tmp)
     }
 }
 
-void		draw_sphere(int x, int y, int z, GLUquadric *quadric)
+#define GREEN	0.0, 10.0, 1.0, 0.0
+#define RED	10.0, 0.0, 1.0, 0.0
+#define BLUE	0.0, 0.0, 10.0, 0.0
+#define S_SIZE	(15 % ((MOD) / 9))
+void		draw_sphere(t_room *tmp, GLUquadric *quadric)
 {
   glPushMatrix();
-  glTranslated(x, y , z);
-  glColor4d(0.0, 10.0, 1.0, 0.0);
+  glTranslated(tmp->x, tmp->y , tmp->z);
+  if (tmp == p->end)
+    glColor4d(RED);
+  else if (tmp == p->start)
+    glColor4d(BLUE);
+  else
+    glColor4d(GREEN);
   gluQuadricDrawStyle(quadric, GLU_SILHOUETTE);
-  gluSphere(quadric, 1.5, 40, 40);
+  gluSphere(quadric, S_SIZE, 40, 40);
   glPopMatrix();
 }
 
@@ -107,26 +161,24 @@ void		draw_quadrics()
     {
       tmp->x %= MOD;
       tmp->y %= MOD;
-      tmp->z = tmp->z ? my_rand(0, 42) : tmp->z;
-      draw_sphere(tmp->x, tmp->y, tmp->z,  quadric);
+      if (tmp->z == 0)
+	tmp->z = my_rand(0, MOD);
+      draw_sphere(tmp,  quadric);
       if (tmp != root->next)
-	draw_cylindre(quadric, tmp);
+     	draw_cylindre(quadric, tmp);
     }
-
   /*  glPushMatrix();
   glTranslated(0, 1, 1.0);
   glColor4d(1.0, 1.0, 1.0, 1.0);
   gluQuadricDrawStyle(quadric, GLU_LINE);
   gluSphere(quadric, 10, 40, 40);
   glPopMatrix();
-
   glPushMatrix();
   glTranslated(1, 0.9, 0.0);
   glColor4d(1.0, 1.0, 1.0, 1.0);
   gluQuadricDrawStyle(quadric, GLU_LINE);
   gluCylinder(quadric, 2, 2, 10, 20, 20);
   glPopMatrix();*/
-
   gluDeleteQuadric(quadric);
 }
 
@@ -218,7 +270,10 @@ void	keyboard(unsigned char key, int x, int y)
 
 int		make_coffee(int argc, char **argv, t_room *room, t_pos *pos)
 {
+  t_ant		**tab;
+
   root = room;
+  p = pos;
   glutInit(&argc, argv);
   glutInitWindowSize(WIDTH, HEIGHT);
   glutInitWindowPosition(30, 30);
