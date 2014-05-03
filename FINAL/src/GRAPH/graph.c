@@ -1,16 +1,7 @@
-/*
-** main.c for Project-Master in /home/beau_v/Test/Lem-in/Lem-in
-** 
-** Made by beau_v
-** Login   <victor.beau@epitech.eu>
-** 
-** Started on  Thu May  1 20:54:41 2014 beau_v
-** Last update Sat May  3 07:13:47 2014 chalie_a
-*/
-
 #include <GL/glut.h>
 #include <stdlib.h>
 #include <math.h>
+#include <stdio.h>
 #include "lem_in.h"
 #include "graph.h"
 
@@ -23,72 +14,36 @@ static const GLfloat	mat_diffuse[] = {0.8f, 0.8f, 0.8f, 1.0f};
 static const GLfloat	mat_specular[] = {1.0f, 1.0f, 1.0f, 1.0f};
 static const GLfloat	high_shininess[] = {100.0f};
 
+# define ROW	40
+# define MOD    40
+
+
 t_room		*root;
 int		window;
-float		lx = 0.0f;
-float		lz = -1.0f;
-float		x = 0.0f;
-float		z = 5.0f;
-float		red = 1.0f;
-float		blue = 1.0f;
-float		green = 1.0f;
-float		angle = 0.0f;
-float		deltaAngle = 0.0f;
-int		xOrigin = -1;
+float		xpos = 0;
+float		ypos = 0;
+float		zpos = 0;
+float		xrot = 0;
+float		yrot = 0;
+float		angle = 0.0;
 
-static void	resize(int width, int height)
+void camera(void)
 {
-  float		ratio;
+  glRotatef(xrot, 1.0, 0.0, 0.0);
+  glRotatef(yrot, 0.0, 1.0, 0.0);
+  glTranslated(-xpos, -ypos, -zpos);
+}
 
-  if (height == 0)
-    height = 1;
-  ratio = width * 1.0 / height;
+void reshape(int w, int h)
+{
+  if (h == 0)
+    h = 1;
+  glViewport(0, 0, (GLsizei)w, (GLsizei)h);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  glViewport(0, 0, width, height);
-  gluPerspective(45.0f, ratio, 0.1f, 100.0f);
+  gluPerspective(60, (GLfloat)w / (GLfloat)h, 1.0, 1000.0);
   glMatrixMode(GL_MODELVIEW);
 }
-
-static void	keyboard_events(int key, int xx, int yy)
-{
-  float	fraction;
-  
-  fraction = 0.4f;
-  if (key == GLUT_KEY_LEFT)
-    {
-      angle -= 0.04f;
-      lx = sin(angle);
-      lz = -cos(angle);
-    }
-  if (key == GLUT_KEY_RIGHT)
-    {
-      angle += 0.04f;
-      lx = sin(angle);
-      lz = -cos(angle);
-    }
-  if (key == GLUT_KEY_UP)
-    {
-      x += lx * fraction;
-      z += lz * fraction;
-    }
-  if (key == GLUT_KEY_DOWN)
-    {
-      x -= lx * fraction;
-      z -= lz * fraction;
-    }
-}
-
-void	keyboard_escape(unsigned char key, int x, int y)
-{
-  if (key == KEY_ESC)
-    {
-      glutDestroyWindow(window);
-      exit (0);
-    }
-}
-
-#define ROW	40
 
 void		draw_cylindre(GLUquadric *quadric, t_room *tmp)
 {
@@ -125,8 +80,6 @@ void		draw_cylindre(GLUquadric *quadric, t_room *tmp)
       z = z + z_p;
     }
 }
-
-#define MOD    40
 
 void		draw_sphere(int x, int y, int z, GLUquadric *quadric)
 {
@@ -177,18 +130,6 @@ void		draw_quadrics()
   gluDeleteQuadric(quadric);
 }
 
-static void	display(void)
-{
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-  glLoadIdentity();
-  gluLookAt(x, 1.0f, z, x + lx, 1.0f, z + lz, 0.0f, 1.0f, 0.0f);
-
-  draw_quadrics();
-
-  glutSwapBuffers();
-}
-
 void		create_good_env()
 {
   glClearColor(0, 0, 0, 0);
@@ -210,27 +151,68 @@ void		create_good_env()
   glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
 }
 
-void mouseMove(int x, int y)
+
+static void	display(void)
 {
-  if (xOrigin >= 0)
-    {
-      deltaAngle = (x - xOrigin) * 0.001f;
-      lx = sin(angle + deltaAngle);
-      lz = -cos(angle + deltaAngle);
-    }
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glLoadIdentity();
+
+  camera();
+  create_good_env();
+  draw_quadrics();
+
+  glutSwapBuffers();
+  angle++;
 }
 
-void mouseButton(int button, int state, int x, int y)
+void	keyboard(unsigned char key, int x, int y)
 {
-  if (button == GLUT_LEFT_BUTTON)
+  float xrotrad;
+  float yrotrad;
+
+  if (key == 's')
     {
-      if (state == GLUT_UP)
-	{
-	  angle += deltaAngle;
-	  xOrigin = -1;
-	}
-      else 
-	xOrigin = x;
+      xrot += 1;
+      if (xrot >360)
+	xrot -= 360;
+    }
+  if (key == 'z')
+    {
+      xrot -= 1;
+      if (xrot < -360)
+	xrot += 360;
+    }
+  if (key == 'e')
+    {
+      yrotrad = (yrot / 180 * 3.141592654f);
+      xrotrad = (xrot / 180 * 3.141592654f); 
+      xpos = xpos + sin(yrotrad);
+      zpos = zpos - cos(yrotrad);
+      ypos = ypos - sin(xrotrad);
+    }
+  if (key == 'a')
+    {
+      yrotrad = (yrot / 180 * 3.141592654f);
+      xrotrad = (xrot / 180 * 3.141592654f); 
+      xpos = xpos - sin(yrotrad);
+      zpos = zpos + cos(yrotrad);
+      ypos = ypos + sin(xrotrad);
+    }
+  if (key == 'd')
+    {
+      yrot += 1;
+      if (yrot > 360)
+	yrot -= 360;
+    }
+  if (key == 'q')
+    {
+      yrot -= 1;
+      if (yrot < -360)
+	yrot += 360;
+    }
+  if (key == 27)
+    {
+      exit(0);
     }
 }
 
@@ -243,13 +225,9 @@ int		make_coffee(int argc, char **argv, t_room *room, t_pos *pos)
   glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
   window = glutCreateWindow("Lem-in");
   glutDisplayFunc(display);
-  glutReshapeFunc(resize);
   glutIdleFunc(display);
-  glutKeyboardFunc(keyboard_escape);
-  glutSpecialFunc(keyboard_events);
-  glutMouseFunc(mouseButton);
-  glutMotionFunc(mouseMove);
-  create_good_env();
+  glutReshapeFunc(reshape);
+  glutKeyboardFunc(keyboard);
   glutMainLoop();
   return (EXIT_SUCCESS);
 }
