@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Wed Apr 16 22:50:26 2014 chalie_a
-** Last update Sat May  3 05:35:22 2014 chalie_a
+** Last update Sat May  3 05:30:25 2014 chalie_a
 */
 
 #include <stdio.h>
@@ -14,9 +14,9 @@
 #include <stdlib.h>
 #include "lem_in.h"
 
-static t_room		*init_root()
+t_room		*init_root()
 {
-  t_room		*root;
+  t_room	*root;
 
   if (!(root = malloc(sizeof(t_room))))
     return (NULL);
@@ -27,9 +27,9 @@ static t_room		*init_root()
   return (root);
 }
 
-static int		opt(char *str)
+int		opt(char *str)
 {
-  int			opt;
+  int		opt;
 
   opt = 1;
   if (!str)
@@ -41,14 +41,13 @@ static int		opt(char *str)
   return (_ERROR(INV_OPT));
 }
 
-int			main(int ac, char **av)
+int		main(int ac, char **av)
 {
-  char			*str;
-  t_room		*root;
-  t_pos			*pos;
+  char		*str;
+  t_room	*root;
+  t_pos		*pos;
 
-  if (!(pos = calloc(1, sizeof(t_pos))))
-    return (FAILURE);
+  pos = calloc(1, sizeof(t_pos));
   str = gnl(0);
   pos->nb = my_atoi(str);
   x_free(str);

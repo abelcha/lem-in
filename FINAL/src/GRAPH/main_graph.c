@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Wed Apr 16 22:50:26 2014 chalie_a
-** Last update Sat May  3 05:35:22 2014 chalie_a
+** Last update Sat May  3 06:00:12 2014 chalie_a
 */
 
 #include <stdio.h>
@@ -14,9 +14,9 @@
 #include <stdlib.h>
 #include "lem_in.h"
 
-static t_room		*init_root()
+static t_room	*init_root()
 {
-  t_room		*root;
+  t_room	*root;
 
   if (!(root = malloc(sizeof(t_room))))
     return (NULL);
@@ -27,25 +27,11 @@ static t_room		*init_root()
   return (root);
 }
 
-static int		opt(char *str)
+int		main(int ac, char **av)
 {
-  int			opt;
-
-  opt = 1;
-  if (!str)
-    return (opt);
-  if (str[0] == '-' && str[1] == 'O')
-    opt = str[2] - '0';
-  if (opt >= 0 && opt <= 4)
-    return (opt);
-  return (_ERROR(INV_OPT));
-}
-
-int			main(int ac, char **av)
-{
-  char			*str;
-  t_room		*root;
-  t_pos			*pos;
+  char		*str;
+  t_room	*root;
+  t_pos		*pos;
 
   if (!(pos = calloc(1, sizeof(t_pos))))
     return (FAILURE);
@@ -54,14 +40,9 @@ int			main(int ac, char **av)
   x_free(str);
   if (pos->nb <= 0)
     return (_ERROR(INV_NB));
-  printf("%d\n", pos->nb);
-  if ((pos->opt = opt(av[1])) == FAILURE)
-    return (FAILURE);
   root = init_root();
   read_data(root, pos, DATA);
   if (!pos->end || !pos->start || !pos->start->name || !pos->end->name)
     return (_ERROR(INV_MAP));
-  if (ant_colony_clustering(root, pos) == SUCCESS)
-    start_migration(root, pos);
-  return (SUCCESS);
+  return (make_coffee(ac, av, root, pos));
 }

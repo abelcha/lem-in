@@ -5,7 +5,7 @@
 ** Login   <durand_u@epitech.net>
 ** 
 ** Started on  Sat Mar 29 14:41:44 2014 durand_u
-** Last update Fri May  2 09:58:06 2014 chalie_a
+** Last update Sat May  3 06:00:37 2014 chalie_a
 */
 
 #ifndef LEM_IN_H_
@@ -26,6 +26,7 @@ typedef struct		s_room
 {
   int			x;
   int			y;
+  int			z;
   int			coeff;
   int			visited;
   int			nb_nodes;
@@ -119,6 +120,7 @@ int	start_migration(t_room *root, t_pos *pos);
 t_room	*get_next_location(t_pos *pos, t_ant *ant, t_ia *ia);
 int	check_recovery(t_ant *ant);
 int	delete_node(t_ant *root, t_ant *tmp, t_pos *pos, t_ia *ia);
+void	clean_all(t_room *root, t_pos *pos, t_ant *ant);
 
 /*
 **     LIB
@@ -136,12 +138,5 @@ int	my_rand (int min, int max);
 int	my_atoi(char *str);
 char	*gnl(const int fd);
 
-/*
-**	MAIN
-*/
-
-void	clean_all(t_room *root, t_pos *pos, t_ant *ant);
-t_room	*init_root();
-int	opt(char *str);
 
 #endif /* !LEM_IN_H_ */
