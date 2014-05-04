@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Sun Apr 27 07:27:25 2014 chalie_a
-** Last update Fri May  2 15:31:27 2014 chalie_a
+** Last update Sun May  4 23:31:51 2014 beau_v
 */
 
 #include "lem_in.h"
@@ -42,8 +42,7 @@ static t_room		*find_location(const t_pos *pos, const t_ant *ant)
   ret = ant->location;
   tmp = ant->location->links;
   while ((tmp = tmp->next) != ant->location->links)
-    if (tmp->node == pos->end/* &&
-				(/*ant->location != pos->start || pos->end->visited == 0)*/)
+    if (tmp->node == pos->end)
       return (tmp->node);
     else if (is_legit(tmp->node, ant) == TRUE &&
 	     (ret == ant->location || tmp->node->coeff >= ret->coeff))

@@ -5,7 +5,7 @@
 ** Login   <victor.beau@epitech.eu>
 ** 
 ** Started on  Sun May  4 02:15:54 2014 beau_v
-** Last update Sun May  4 21:57:03 2014 chalie_a
+** Last update Sun May  4 23:30:22 2014 beau_v
 */
 
 #include <GL/glut.h>
@@ -13,49 +13,30 @@
 #include "lem_in.h"
 #include "graph.h"
 
-static const GLfloat	light_ambient[] = {0.0f, 0.0f, 0.0f, 1.0f};
-static const GLfloat	light_diffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};
-static const GLfloat	light_specular[] = {1.0f, 1.0f, 1.0f, 1.0f};
-static const GLfloat	light_position[] = {2.0f, 5.0f, 5.0f, 0.0f};
-static const GLfloat	mat_ambient[] = {0.7f, 0.7f, 0.7f, 1.0f};
-static const GLfloat	mat_diffuse[] = {0.8f, 0.8f, 0.8f, 1.0f};
-static const GLfloat	mat_specular[] = {1.0f, 1.0f, 1.0f, 1.0f};
-static const GLfloat	high_shininess[] = {100.0f};
+extern t_move		*move;
+t_room			*root;
+t_pos			*p;
+float			x_timer = 0.0;
+float			y_timer = 0.0;
+float			z_timer = 0.0;
+float			x_ptimer = 0.0;
+float			y_ptimer = 0.0;
+float			z_ptimer = 0.0;
+int			timer_flag = 42;
 
-t_room		*root;
-t_pos		*p;
-extern t_move	*move;
-float	x_timer = 0.0;
-float	y_timer = 0.0;
-float	z_timer = 0.0;
-float	x_ptimer = 0.0;
-float	y_ptimer = 0.0;
-float	z_ptimer = 0.0;
-int	animating = 0;
-int	yolo = 42;
-
-void	try_dis_shit(t_coord *coord, GLUquadric	*sphere_ant)
+void			make_ants(t_coord *coord)
 {
   glPushMatrix();
-
   glTranslated(x_timer, y_timer, z_timer);
-
   glRotatef(180, coord->a1, coord->a2, coord->a3);
-
   glColor4d(165.0, 82.0, 76.0, 0.0);
-
-  gluSphere(sphere_ant, 0.3, 20, 20);
-
+  glutWireSphere(0.3, 12, 12);
   glPopMatrix();
 }
 
-void	draw_test(t_coord *coord, t_room *r1, t_room *r2)
+void			draw_test(t_coord *coord, t_room *r1, t_room *r2)
 {
-  int	i = 0;
-  GLUquadric	*sphere_ant;
-
-  sphere_ant = gluNewQuadric();
-  if (yolo == 42)
+  if (timer_flag == 42)
     {
       x_timer = (float)r1->x;
       y_timer = (float)r1->y;
@@ -63,15 +44,14 @@ void	draw_test(t_coord *coord, t_room *r1, t_room *r2)
       x_ptimer = ((float)r2->x - (float)r1->x) / ROW;
       y_ptimer = ((float)r2->y - (float)r1->y) / ROW;
       z_ptimer = ((float)r2->z - (float)r1->z) / ROW;
-      yolo = 0;
+      timer_flag = 0;
     }
-  try_dis_shit(coord, sphere_ant);
-  gluDeleteQuadric(sphere_ant);
+  make_ants(coord);
 }
 
-void update(int value)
+void			 update(int value)
 {
-  static int cpt = 0;
+  static int		cpt = 0;
 
   if (++cpt < ROW + 1)
     {
@@ -81,84 +61,32 @@ void update(int value)
     }
   else
     {
-      yolo = 42;
+      timer_flag = 42;
       cpt = 0;
     }
   glutTimerFunc(5, update, 0);
   glutPostRedisplay();
 }
 
-static void	reshape(int w, int h)
+static void		display()
 {
-  if (h == 0)
-    h = 1;
-  glViewport(0, 0, (GLsizei)w, (GLsizei)h);
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  gluPerspective(45, (GLfloat)w / (GLfloat)h, 1.0, 1000.0);
-  glMatrixMode(GL_MODELVIEW);
-}
-
-static void	create_good_env()
-{
-  glClearColor(0, 0, 0, 1);
-  glEnable(GL_CULL_FACE);
-  glCullFace(GL_BACK);
-  glEnable(GL_DEPTH_TEST);
-  glDepthFunc(GL_LESS);
-  glEnable(GL_LIGHT0);
-  glEnable(GL_NORMALIZE);
-  glEnable(GL_COLOR_MATERIAL);
-  glEnable(GL_LIGHTING);
-  glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
-  glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
-  glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
-  glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-  glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
-  glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
-  glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-  glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
-}
-
-static void	display()
-{
-  t_move	*tp;
-  static int     cpt = 0;
-
-  if (++cpt == 1)
-    {
-      printf(" tamerelachienn\n");
-      tp = move->next;
-    }
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
   camera();
   create_good_env();
   draw_quadrics(root, p);
-  if (yolo == 42)
-    move = move->next;
+  if (timer_flag == 42)
+    if (!move->next->r1)
+      exit(0);
+    else
+      move = move->next;
   draw_ants(move->r1, move->r2);
   glFlush();
   glutSwapBuffers();
   glutPostRedisplay();
 }
 
-void		init_camera_pos()
-{
-  int		i;
-
-  i = 0;
-  while (i++ < 60)
-    zoom(2);
-  i = 0;
-  while (i++ < 8)
-    rotate(3);
-  i = 0;
-  while (i++ < 6)
-    rotate(2);
-}
-
-int		make_coffee(int argc, char **argv, t_room *room, t_pos *pos)
+int			make_coffee(int argc, char **argv, t_room *room, t_pos *pos)
 {
   root = room;
   p = pos;

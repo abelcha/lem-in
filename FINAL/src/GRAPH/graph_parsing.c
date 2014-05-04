@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Sun May  4 11:08:00 2014 chalie_a
-** Last update Sun May  4 21:53:21 2014 chalie_a
+** Last update Sun May  4 23:26:41 2014 beau_v
 */
 
 #include <stdlib.h>
@@ -13,22 +13,9 @@
 #include "lem_in.h"
 #include "graph.h"
 
-extern t_pos	*p;
-t_move		*move;
-extern char	*last_line;
-
-static t_room		**init_ant()
-{
-  t_room		**tab;
-  int			i;
-
-  i = 0;
-  if (!(tab = calloc(p->nb_ant + 10, sizeof(t_ant))))
-    return (NULL);
-  while (++i < p->nb_ant + 5)
-    tab[i] = p->start;
-  return (tab);
-}
+extern t_pos		*p;
+extern char		*last_line;
+t_move			*move;
 
 static void		d_free(char **stock)
 {
@@ -38,16 +25,6 @@ static void		d_free(char **stock)
   while (stock[++i])
     x_free(stock[i]);
   x_free(stock);
-}
-
-static t_room		*find_room(char *str, t_room *tmp,
-				   const t_room *root)
-{
-  if (!speed_cmp(str, tmp->name))
-    return (tmp);
-  if ((tmp = tmp->next) != root)
-    return (find_room(str, tmp, root));
-  return (NULL);
 }
 
 int			add_movement(t_move *elem, t_room *r1, t_room *r2)
@@ -64,7 +41,6 @@ int			add_movement(t_move *elem, t_room *r1, t_room *r2)
   elem->prev = newelem;
   return (SUCCESS);
 }
-
 
 static int		get_each_movement(char **stock, t_room **tab, t_room *root)
 {
@@ -86,7 +62,6 @@ static int		get_each_movement(char **stock, t_room **tab, t_room *root)
 	return (FAILURE);
       if (add_movement(move, tab[ant_nb], target) == FAILURE)
 	return (FAILURE);
-      printf(" %s to %s\n", tab[ant_nb]->name, target->name);
       tab[ant_nb] = target;
       d_free(op);
     }
@@ -94,7 +69,7 @@ static int		get_each_movement(char **stock, t_room **tab, t_room *root)
   return (SUCCESS);
 }
 
-t_move		*init_move()
+t_move			*init_move()
 {
   t_move		*root;
 

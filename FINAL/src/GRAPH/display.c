@@ -5,24 +5,18 @@
 ** Login   <victor.beau@epitech.eu>
 ** 
 ** Started on  Sun May  4 02:17:06 2014 beau_v
-** Last update Sun May  4 22:13:56 2014 chalie_a
+** Last update Sun May  4 23:17:59 2014 beau_v
 */
 
 #include <GL/glut.h>
 #include <math.h>
 #include "lem_in.h"
 #include "graph.h"
-extern int yolo;
+
 # define MOD    p->nb_ant * 2
 # define S_SIZE	(15 % ((MOD) / 9))
 
-/*float	x_timer = 0.0;
-float	y_timer = 0.0;
-float	z_timer = 0.0;
-float	x_ptimer = 0.0;
-float	y_ptimer = 0.0;
-float	z_ptimer = 0.0;
-int	timer_flag = 1;*/
+extern int	 yolo;
 
 static void	draw_cylinder(t_coord *coord, t_room *tmp)
 {
@@ -58,13 +52,13 @@ static void	init_cylinder(t_room *r1, t_room *r2, int flag)
   coord.o3 = (float)r2->z - (float)r1->z;
   coord.pipe_lenght = sqrt(coord.o1 * coord.o1 + coord.o2 *
 			   coord.o2 + coord.o3 * coord.o3);
-  coord.o1 = coord.o1 / coord.pipe_lenght; /* normalize */
+  coord.o1 = coord.o1 / coord.pipe_lenght;
   coord.o2 = coord.o2 / coord.pipe_lenght;
   coord.o3 = coord.o3 / coord.pipe_lenght;
-  coord.a1 = coord.o1; /* normalized cylinder vector + normalized target vector */
+  coord.a1 = coord.o1;
   coord.a2 = coord.o2;
   coord.a3 = 1 + coord.o3;
-  if ((coord.a1 == 0.0) && (coord.a2 == 0.0) && (coord.a3 == 0.0)) /* exception! */
+  if ((coord.a1 == 0.0) && (coord.a2 == 0.0) && (coord.a3 == 0.0))
     coord.a1 = 1;
   if (flag == 1)
     draw_cylinder(&coord, r1);
@@ -81,13 +75,10 @@ static void	draw_sphere(t_room *tmp, t_pos *p)
   glTranslated(tmp->x, tmp->y , tmp->z);
   if (tmp == p->end)
     glColor4d(RED);
-    //    glColor3d(1, 0, 0);
   else if (tmp == p->start)
     glColor4d(BLUE);
-    //    glColor3d(0, 0, 1);
   else
     glColor4d(GREEN);
-    //    glColor3d(0, 1, 0);
   gluQuadricDrawStyle(quadric, GLU_SILHOUETTE);
   gluSphere(quadric, 0.7, 40, 40);
   glPopMatrix();
@@ -97,7 +88,6 @@ static void	draw_sphere(t_room *tmp, t_pos *p)
 
 void		draw_ants(t_room *r1, t_room *r2)
 {
-  printf("r1 = %s r2 = %s\n", r1->name, r2->name);
   init_cylinder(r1, r2, 2);
 }
 
@@ -113,10 +103,7 @@ void		draw_quadrics(t_room *root, t_pos *p)
       if (tmp->z == 0)
 	tmp->z = my_rand(0, MOD);
       draw_sphere(tmp, p);
-      if (tmp != root);
-	{
-	  printf(" link %s to %s\n", tmp->name, tmp->prev->name);
-	  init_cylinder(tmp, tmp->prev, 1);
-	}
+      if (tmp != root)
+	init_cylinder(tmp, tmp->prev, 1);
     }
 }

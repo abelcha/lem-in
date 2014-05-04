@@ -5,11 +5,11 @@
 ** Login   <victor.beau@epitech.eu>
 ** 
 ** Started on  Sun May  4 02:35:08 2014 beau_v
-** Last update Sun May  4 20:55:54 2014 chalie_a
+** Last update Sun May  4 23:25:04 2014 beau_v
 */
 
-#ifndef		GRAPH_H_
-# define	GRAPH_H_
+#ifndef			GRAPH_H_
+# define		GRAPH_H_
 
 # include "lem_in.h"
 
@@ -21,16 +21,16 @@
 # define RED		10.0, 0.0, 0.0, 0.0
 # define BLUE		0.0, 0.0, 10.0, 0.0
 
-typedef struct	s_coord
+typedef struct		s_coord
 {
-  float a1;
-  float	a2;
-  float	a3;
-  float o1;
-  float	o2;
-  float	o3;
-  float pipe_lenght;
-}		t_coord;
+  float			a1;
+  float			a2;
+  float			a3;
+  float			o1;
+  float			o2;
+  float			o3;
+  float			pipe_lenght;
+}			t_coord;
 
 typedef struct		s_move
 {
@@ -40,12 +40,17 @@ typedef struct		s_move
   struct s_move		*next;
 }			t_move;
 
+void			keyboard(unsigned char key, int x, int y);
+void			camera(void);
+void			draw_quadrics(t_room *root, t_pos *p);
+int			make_coffee(int argc, char **argv, t_room *room, t_pos *pos);
+void			zoom(int flag);
+void			rotate(int flag);
+void			init_camera_pos();
+void			draw_test(t_coord *coord, t_room *r1, t_room *r2);
+void			reshape(int w, int h);
+void			create_good_env();
+t_room			*find_room(char *str, t_room *tmp, const t_room *root);
+t_room			**init_ant();
 
-void		keyboard(unsigned char key, int x, int y);
-void		camera(void);
-void		draw_quadrics(t_room *root, t_pos *p);
-int		make_coffee(int argc, char **argv, t_room *room, t_pos *pos);
-void		zoom(int flag);
-void		rotate(int flag);
-
-#endif		/* !GRAPH_H_ */
+#endif			/* !GRAPH_H_ */

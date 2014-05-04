@@ -7,7 +7,7 @@
 ## Started on  Sun Jan  5 08:34:59 2014 chalie_a
 ##
 
-CC	=	gcc -Ofast -g3
+CC	=	gcc -Ofast
 
 NAME	=	lem_in
 
@@ -18,8 +18,10 @@ SRC	=		src/main.c		\
 GRAPH	=	src/GRAPH/main_graph.c		\
 		src/GRAPH/graph.c		\
 		src/GRAPH/keyboard.c		\
-		src/GRAPH/display.c			\
-		src/GRAPH/graph_parsing.c
+		src/GRAPH/display.c		\
+		src/GRAPH/graph_parsing.c	\
+		src/GRAPH/func.c		\
+		src/GRAPH/parsing_funcs.c
 
 ALGO	=	src/ALGO/grid_workflow.c	\
 		src/ALGO/shared.c		\
