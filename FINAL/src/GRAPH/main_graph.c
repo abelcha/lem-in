@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Wed Apr 16 22:50:26 2014 chalie_a
-** Last update Sun May  4 20:14:19 2014 chalie_a
+** Last update Sun May  4 22:23:48 2014 chalie_a
 */
 
 #include <stdio.h>
@@ -13,6 +13,8 @@
 #include <string.h>
 #include "graph.h"
 #include "lem_in.h"
+
+extern t_pos	*p;
 
 static t_room	*init_root()
 {
@@ -45,5 +47,8 @@ int		main(int ac, char **av)
   read_data(root, pos, DATA);
   if (!pos->end || !pos->start || !pos->start->name || !pos->end->name)
     return (_ERROR(INV_MAP));
+  p = pos;
+  if (get_movement(root) == FAILURE)
+    return (FAILURE);
   return (make_coffee(ac, av, root, pos));
 }

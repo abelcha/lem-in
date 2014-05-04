@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Sun May  4 11:08:00 2014 chalie_a
-** Last update Sun May  4 14:39:44 2014 chalie_a
+** Last update Sun May  4 21:53:21 2014 chalie_a
 */
 
 #include <stdlib.h>
@@ -14,7 +14,8 @@
 #include "graph.h"
 
 extern t_pos	*p;
-extern t_room	*root;
+t_move		*move;
+extern char	*last_line;
 
 static t_room		**init_ant()
 {
@@ -49,7 +50,23 @@ static t_room		*find_room(char *str, t_room *tmp,
   return (NULL);
 }
 
-static int		get_each_movement(char **stock, t_room **tab)
+int			add_movement(t_move *elem, t_room *r1, t_room *r2)
+{
+  t_move		*newelem;
+
+  if (!(newelem = calloc(1, sizeof(t_move))))
+    return (FAILURE);
+  newelem->r1 = r1;
+  newelem->r2 = r2;
+  newelem->prev = elem->prev;
+  newelem->next = elem;
+  elem->prev->next = newelem;
+  elem->prev = newelem;
+  return (SUCCESS);
+}
+
+
+static int		get_each_movement(char **stock, t_room **tab, t_room *root)
 {
   int			i;
   char			**op;
@@ -67,8 +84,9 @@ static int		get_each_movement(char **stock, t_room **tab)
 	return (FAILURE);
       if (!(target = find_room(op[1], root->next, root)))
 	return (FAILURE);
-      printf("from room %s to room %s\n", tab[ant_nb]->name, target->name);
-      // move_ant(tab[ant_nb], target); 
+      if (add_movement(move, tab[ant_nb], target) == FAILURE)
+	return (FAILURE);
+      printf(" %s to %s\n", tab[ant_nb]->name, target->name);
       tab[ant_nb] = target;
       d_free(op);
     }
@@ -76,7 +94,18 @@ static int		get_each_movement(char **stock, t_room **tab)
   return (SUCCESS);
 }
 
-int			get_movement()
+t_move		*init_move()
+{
+  t_move		*root;
+
+  if (!(root = malloc(sizeof(t_move))))
+    return (NULL);
+  root->prev = root;
+  root->next = root;
+  return (root);
+}
+
+int			get_movement(t_room *root)
 {
   char			*str;
   char			**stock;
@@ -84,13 +113,20 @@ int			get_movement()
 
   if (!(tab = init_ant()))
     return (FAILURE);
+  if (!(move = init_move()))
+    return (FAILURE);
+  if (!(stock = to_tab(last_line, 0, ' ')))
+      return (FAILURE);
+  if (get_each_movement(stock, tab, root) == FAILURE)
+    return (FAILURE);
   while ((str = gnl(0)))
     {
       if (!(stock = to_tab(str, 0, ' ')))
 	return (FAILURE);
-      if (get_each_movement(stock, tab) == FAILURE)
+      if (get_each_movement(stock, tab, root) == FAILURE)
 	return (FAILURE);
       x_free(str);
     }
-  x_free(tab);  
+  x_free(tab);
+  return (SUCCESS);
 }

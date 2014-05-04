@@ -5,7 +5,7 @@
 ** Login   <victor.beau@epitech.eu>
 ** 
 ** Started on  Sun May  4 02:17:06 2014 beau_v
-** Last update Sun May  4 20:14:30 2014 chalie_a
+** Last update Sun May  4 22:13:56 2014 chalie_a
 */
 
 #include <GL/glut.h>
@@ -97,22 +97,8 @@ static void	draw_sphere(t_room *tmp, t_pos *p)
 
 void		draw_ants(t_room *r1, t_room *r2)
 {
-  t_room	*tmp;
-  int		i;
-
-  i = 0;
-  //  tmp = root->next;
-
-  /*  while ((tmp = tmp->next) != root)
-      {*/
-      /*      tmp->x %= MOD;
-      tmp->y %= MOD;
-      if (tmp->z == 0)
-      tmp->z = my_rand(0, MOD);*/
-
-  //  if (tmp != root->next)
+  printf("r1 = %s r2 = %s\n", r1->name, r2->name);
   init_cylinder(r1, r2, 2);
-  //}
 }
 
 void		draw_quadrics(t_room *root, t_pos *p)
@@ -127,7 +113,10 @@ void		draw_quadrics(t_room *root, t_pos *p)
       if (tmp->z == 0)
 	tmp->z = my_rand(0, MOD);
       draw_sphere(tmp, p);
-      if (tmp != root->next)
-	init_cylinder(tmp, tmp->prev, 1);
+      if (tmp != root);
+	{
+	  printf(" link %s to %s\n", tmp->name, tmp->prev->name);
+	  init_cylinder(tmp, tmp->prev, 1);
+	}
     }
 }

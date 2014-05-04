@@ -7,7 +7,7 @@
 ## Started on  Sun Jan  5 08:34:59 2014 chalie_a
 ##
 
-CC	=	gcc -Ofast 
+CC	=	gcc -Ofast -g3
 
 NAME	=	lem_in
 

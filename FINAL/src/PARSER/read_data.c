@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Wed Apr 16 22:50:26 2014 chalie_a
-** Last update Sun May  4 14:12:07 2014 chalie_a
+** Last update Sun May  4 21:50:08 2014 chalie_a
 */
 
 #include <stdio.h>
@@ -13,6 +13,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "lem_in.h"
+
+char			*last_line;
 
 static int		get_sharp_value(char *str)
 {
@@ -48,7 +50,10 @@ int		read_data(t_room *root, t_pos *pos, int prev_type)
        printf("%s\n", str);
        type = (*str == '#' ? get_line_type(str) : DATA);
        if (type == DATA && add_elem(root, str, pos) == FAILURE)
-	 return (FAILURE);
+	 {
+	   last_line = str;
+	   return (FAILURE);
+	 }
        if (prev_type != DATA)
 	 get_start_and_end(pos, prev_type, root->prev);
        x_free(str);

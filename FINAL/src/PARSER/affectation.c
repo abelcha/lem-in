@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Wed Apr 16 22:50:26 2014 chalie_a
-** Last update Fri May  2 09:51:53 2014 chalie_a
+** Last update Sun May  4 22:25:59 2014 chalie_a
 */
 
 #include <stdio.h>
@@ -21,7 +21,7 @@ static t_room			*find_room(char *str, t_room *tmp,
 					   const t_room *root)
 {
   if (!speed_cmp(str, tmp->name))
-    return (tmp);
+      return (tmp);
   if ((tmp = tmp->next) != root)
     return (find_room(str, tmp, root));
   _ERROR(INV_ROOM);

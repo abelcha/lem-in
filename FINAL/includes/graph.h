@@ -5,7 +5,7 @@
 ** Login   <victor.beau@epitech.eu>
 ** 
 ** Started on  Sun May  4 02:35:08 2014 beau_v
-** Last update Sun May  4 03:49:07 2014 beau_v
+** Last update Sun May  4 20:55:54 2014 chalie_a
 */
 
 #ifndef		GRAPH_H_
@@ -31,6 +31,15 @@ typedef struct	s_coord
   float	o3;
   float pipe_lenght;
 }		t_coord;
+
+typedef struct		s_move
+{
+  t_room		*r1;
+  t_room		*r2;
+  struct s_move		*prev;
+  struct s_move		*next;
+}			t_move;
+
 
 void		keyboard(unsigned char key, int x, int y);
 void		camera(void);

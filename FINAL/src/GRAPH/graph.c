@@ -5,7 +5,7 @@
 ** Login   <victor.beau@epitech.eu>
 ** 
 ** Started on  Sun May  4 02:15:54 2014 beau_v
-** Last update Sun May  4 20:09:17 2014 beau_v
+** Last update Sun May  4 21:57:03 2014 chalie_a
 */
 
 #include <GL/glut.h>
@@ -24,7 +24,7 @@ static const GLfloat	high_shininess[] = {100.0f};
 
 t_room		*root;
 t_pos		*p;
-
+extern t_move	*move;
 float	x_timer = 0.0;
 float	y_timer = 0.0;
 float	z_timer = 0.0;
@@ -57,7 +57,6 @@ void	draw_test(t_coord *coord, t_room *r1, t_room *r2)
   sphere_ant = gluNewQuadric();
   if (yolo == 42)
     {
-      printf(" initialise lol\n");
       x_timer = (float)r1->x;
       y_timer = (float)r1->y;
       z_timer = (float)r1->z;
@@ -66,9 +65,7 @@ void	draw_test(t_coord *coord, t_room *r1, t_room *r2)
       z_ptimer = ((float)r2->z - (float)r1->z) / ROW;
       yolo = 0;
     }
-  //  printf("TRY ME\n");
   try_dis_shit(coord, sphere_ant);
-  //printf("FML\n");
   gluDeleteQuadric(sphere_ant);
 }
 
@@ -76,27 +73,17 @@ void update(int value)
 {
   static int cpt = 0;
 
-  printf("x_timer : %lf\n", x_timer);
-  printf("y_timer : %lf\n", y_timer);
-  printf("z_timer : %lf\n", z_timer);
-  printf("x_ptimer : %lf\n", x_ptimer);
-  printf("y_ptimer : %lf\n", y_ptimer);
-  printf("z_ptimer : %lf\n", z_ptimer);
   if (++cpt < ROW + 1)
     {
-      printf("ca passe dans ta mere\n");
       x_timer = x_timer + x_ptimer;
       y_timer = y_timer + y_ptimer;
       z_timer = z_timer + z_ptimer;
     }
   else
     {
-      printf("yolo remis a 42\n");
       yolo = 42;
       cpt = 0;
     }
-  printf("x_timer_up : %lf\n", x_timer);
-  printf("x_ptimer_up : %lf\n", x_ptimer);
   glutTimerFunc(5, update, 0);
   glutPostRedisplay();
 }
@@ -135,16 +122,23 @@ static void	create_good_env()
 
 static void	display()
 {
+  t_move	*tp;
+  static int     cpt = 0;
+
+  if (++cpt == 1)
+    {
+      printf(" tamerelachienn\n");
+      tp = move->next;
+    }
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
   camera();
   create_good_env();
   draw_quadrics(root, p);
-
-  draw_ants(p->start, p->end);
-
+  if (yolo == 42)
+    move = move->next;
+  draw_ants(move->r1, move->r2);
   glFlush();
-
   glutSwapBuffers();
   glutPostRedisplay();
 }

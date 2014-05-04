@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Thu Apr 24 10:22:18 2014 chalie_a
-** Last update Fri May  2 09:30:37 2014 chalie_a
+** Last update Sun May  4 22:28:16 2014 chalie_a
 */
 
 #include <stdlib.h>
@@ -42,7 +42,7 @@ int				link_node(t_room *r1, t_room *r2)
 {
   if (r1 != r2 && existing_node(r1, r2) == FALSE)
     {
-      if (create_link(r1->links, r2) == FAILURE)
+     if (create_link(r1->links, r2) == FAILURE)
 	return (FAILURE);
       else if (create_link(r2->links, r1) == FAILURE)
 	return (FAILURE);
