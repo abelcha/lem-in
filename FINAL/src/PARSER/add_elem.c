@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Wed Apr 16 22:50:26 2014 chalie_a
-** Last update Fri May  2 15:23:44 2014 chalie_a
+** Last update Sun May  4 17:36:07 2014 chalie_a
 */
 
 #include <stdlib.h>
@@ -50,13 +50,14 @@ static t_node			*init_links()
   root->next = root;
   return (root);
 }
-int				add_elem(t_room *elem, char *str)
+int				add_elem(t_room *elem, char *str, t_pos *pos)
 {
   t_room			*newelem;
   char				**stock;
 
   if ((stock = is_affectation(str)))
     return (add_affectation(stock, elem));
+  ++(pos->nb_room);
   if (!(newelem = calloc(1, sizeof(t_room))))
     return (FAILURE);
   if (!(newelem->links = init_links()))

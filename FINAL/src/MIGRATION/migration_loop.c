@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Sun Apr 27 07:27:25 2014 chalie_a
-** Last update Fri May  2 09:32:49 2014 chalie_a
+** Last update Sun May  4 14:18:29 2014 chalie_a
 */
 
 #include <stdio.h>
@@ -42,7 +42,7 @@ int			delete_node(t_ant *root, t_ant *tmp,
 int			migration_loop(t_pos *pos, t_ia *ia,
 				       t_ant *ant)
 {
-  while (ia->arrived < pos->nb + 1 && ++(ia->tt_loop) < ant->nb)
+  while (ia->arrived < pos->nb_ant + 1 && ++(ia->tt_loop) < ant->nb)
     {
       pos->end->visited = 0;
       ia->curr_loop = 0;

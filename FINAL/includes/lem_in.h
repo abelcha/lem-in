@@ -5,7 +5,7 @@
 ** Login   <durand_u@epitech.net>
 ** 
 ** Started on  Sat Mar 29 14:41:44 2014 durand_u
-** Last update Sat May  3 06:00:37 2014 chalie_a
+** Last update Sun May  4 17:43:47 2014 chalie_a
 */
 
 #ifndef LEM_IN_H_
@@ -50,7 +50,8 @@ typedef struct		s_ia
 typedef struct		s_pos
 {
   int			opt;
-  int			nb;
+  int			nb_ant;
+  int			nb_room;
   t_room		*start;
   t_room		*end;
 }			t_pos;
@@ -68,28 +69,28 @@ typedef struct		s_ant
 **	MACROS
 */
 
-#define SUCCESS		1
-#define FAILURE		-1
-#define TRUE		1
-#define FALSE		-1
-#define COMMENT		7
-#define END		0
-#define START		1
-#define DATA		42
-#define SAVE_BUFF	32
-#define M		2147483647
-#define A		16807
+# define SUCCESS	1
+# define FAILURE	-1
+# define TRUE		1
+# define FALSE		-1
+# define COMMENT	7
+# define END		0
+# define START		1
+# define DATA		42
+# define SAVE_BUFF	32
+# define M		2147483647
+# define A		16807
 
 /*
 **	ERROR
 */
 
-#define INV_ROOM	"error : no such room `%s'\n", str
-#define IMP_MAP		"Error : Impossible map\n"
-#define INV_OPT		"Error : Unreconised option `%s' \n", str
-#define INV_NB		"Error : Invalid ant number.\n"
-#define INV_MAP		"Error : Invalid map\n"
-#define _ERROR(...)	fprintf(stderr, __VA_ARGS__) ? -1 : FAILURE
+# define INV_ROOM	"error : no such room `%s'\n", str
+# define IMP_MAP	"Error : Impossible map\n"
+# define INV_OPT	"Error : Unreconised option `%s' \n", str
+# define INV_NB		"Error : Invalid ant number.\n"
+# define INV_MAP	"Error : Invalid map\n"
+# define _ERROR(...)	fprintf(stderr, __VA_ARGS__) ? -1 : FAILURE
 
 /*
 **	PARSER
@@ -99,7 +100,7 @@ int	add_affectation(char **stock, t_room *root);
 char	**is_affectation(char *str);
 int	link_node(t_room *r1, t_room *r2);
 int	read_data(t_room *root, t_pos *pos, int prev_type);
-int	add_elem(t_room *elem, char *str);
+int	add_elem(t_room *elem, char *str, t_pos *pos);
 
 /*
 **	ALGO
@@ -137,6 +138,5 @@ char	**to_tab(char *s, int cpt, char sep);
 int	my_rand (int min, int max);
 int	my_atoi(char *str);
 char	*gnl(const int fd);
-
 
 #endif /* !LEM_IN_H_ */

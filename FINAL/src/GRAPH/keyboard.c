@@ -5,7 +5,7 @@
 ** Login   <victor.beau@epitech.eu>
 ** 
 ** Started on  Sun May  4 02:01:14 2014 beau_v
-** Last update Sun May  4 03:34:12 2014 beau_v
+** Last update Sun May  4 18:16:26 2014 beau_v
 */
 
 #include <GL/glut.h>
@@ -18,6 +18,7 @@ float		ypos = 0;
 float		zpos = 0;
 float		xrot = 0;
 float		yrot = 0;
+int		fs = 0;
 
 void		camera(void)
 {
@@ -34,7 +35,7 @@ void		zoom(int flag)
   if (flag == 1)
     {
       yrotrad = (yrot / 180 * 3.141592654f);
-      xrotrad = (xrot / 180 * 3.141592654f); 
+      xrotrad = (xrot / 180 * 3.141592654f);
       xpos = xpos + sin(yrotrad);
       zpos = zpos - cos(yrotrad);
       ypos = ypos - sin(xrotrad);
@@ -42,7 +43,7 @@ void		zoom(int flag)
   else if (flag == 2)
     {
       yrotrad = (yrot / 180 * 3.141592654f);
-      xrotrad = (xrot / 180 * 3.141592654f); 
+      xrotrad = (xrot / 180 * 3.141592654f);
       xpos = xpos - sin(yrotrad);
       zpos = zpos + cos(yrotrad);
       ypos = ypos + sin(xrotrad);
@@ -77,6 +78,20 @@ void		rotate(int flag)
     }
 }
 
+void		fullscreen()
+{
+  if (fs == 1)
+    {
+      glutReshapeWindow(1400, 900);
+      fs = 0;
+    }
+  else if (fs == 0)
+    {
+      glutFullScreen();
+      fs = 1;
+    }
+}
+
 void		keyboard(unsigned char key, int x, int y)
 {
   if (key == 's')
@@ -91,6 +106,8 @@ void		keyboard(unsigned char key, int x, int y)
     zoom(1);
   if (key == 'a')
     zoom(2);
+  if (key == 'p')
+    fullscreen();
   if (key == KEY_ESC)
     exit (0);
 }

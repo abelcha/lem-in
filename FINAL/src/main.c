@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Wed Apr 16 22:50:26 2014 chalie_a
-** Last update Sat May  3 05:35:22 2014 chalie_a
+** Last update Sun May  4 17:16:37 2014 chalie_a
 */
 
 #include <stdio.h>
@@ -47,17 +47,18 @@ int			main(int ac, char **av)
   t_room		*root;
   t_pos			*pos;
 
-  if (!(pos = calloc(1, sizeof(t_pos))))
+  root = init_root();
+  pos = calloc(1, sizeof(t_pos));
+  if (!root || !pos)
     return (FAILURE);
   str = gnl(0);
-  pos->nb = my_atoi(str);
-  x_free(str);
-  if (pos->nb <= 0)
+  pos->nb_ant = my_atoi(str);
+  if (pos->nb_ant <= 0)
     return (_ERROR(INV_NB));
-  printf("%d\n", pos->nb);
+  x_free(str);
+  printf("%d\n", pos->nb_ant);
   if ((pos->opt = opt(av[1])) == FAILURE)
     return (FAILURE);
-  root = init_root();
   read_data(root, pos, DATA);
   if (!pos->end || !pos->start || !pos->start->name || !pos->end->name)
     return (_ERROR(INV_MAP));

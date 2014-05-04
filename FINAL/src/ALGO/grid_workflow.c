@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Fri Apr 25 05:17:27 2014 chalie_a
-** Last update Fri May  2 09:36:25 2014 chalie_a
+** Last update Sun May  4 14:38:13 2014 chalie_a
 */
 
 #include "lem_in.h"
@@ -22,7 +22,7 @@ int			ant_colony_clustering(t_room *root, t_pos *pos)
   i = -1;
   beg_end[0] = pos->start;
   beg_end[1] = pos->end;
-  max = pos->nb * pos->nb;
+  max = pos->nb_ant * pos->nb_ant;
   pos->opt = 5 - pos->opt;
   while (++i < 2)
     {

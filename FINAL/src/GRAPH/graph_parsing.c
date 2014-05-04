@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Sun May  4 11:08:00 2014 chalie_a
-** Last update Sun May  4 11:46:27 2014 chalie_a
+** Last update Sun May  4 14:39:44 2014 chalie_a
 */
 
 #include <stdlib.h>
@@ -22,9 +22,9 @@ static t_room		**init_ant()
   int			i;
 
   i = 0;
-  if (!(tab = calloc(p->nb + 10, sizeof(t_ant))))
+  if (!(tab = calloc(p->nb_ant + 10, sizeof(t_ant))))
     return (NULL);
-  while (++i < p->nb + 5)
+  while (++i < p->nb_ant + 5)
     tab[i] = p->start;
   return (tab);
 }

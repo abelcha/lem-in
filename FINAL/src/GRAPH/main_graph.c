@@ -5,13 +5,12 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Wed Apr 16 22:50:26 2014 chalie_a
-** Last update Sun May  4 11:40:39 2014 chalie_a
+** Last update Sun May  4 20:14:19 2014 chalie_a
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdlib.h>
 #include "graph.h"
 #include "lem_in.h"
 
@@ -37,14 +36,14 @@ int		main(int ac, char **av)
   if (!(pos = calloc(1, sizeof(t_pos))))
     return (FAILURE);
   str = gnl(0);
-  pos->nb = my_atoi(str);
+  pos->nb_ant = my_atoi(str);
   x_free(str);
-  if (pos->nb <= 0)
+  if (pos->nb_ant <= 0)
     return (_ERROR(INV_NB));
-  root = init_root();
+  if (!(root = init_root()))
+    return (FAILURE);
   read_data(root, pos, DATA);
   if (!pos->end || !pos->start || !pos->start->name || !pos->end->name)
     return (_ERROR(INV_MAP));
-  make_coffee(ac, av, root, pos);
-  clean_all(root, pos, NULL);
+  return (make_coffee(ac, av, root, pos));
 }

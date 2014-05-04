@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Sun Apr 27 07:27:25 2014 chalie_a
-** Last update Fri May  2 09:57:31 2014 chalie_a
+** Last update Sun May  4 17:23:38 2014 chalie_a
 */
 
 #include <stdlib.h>
@@ -49,9 +49,10 @@ int			start_migration(t_room *root, t_pos *pos)
   if (!ant || !ia)
     return (FAILURE);
   ia->tt_ant = -1;
-  while (++ia->tt_ant < pos->nb)
-    add_ant(ant, pos, ia->tt_ant);
-  ant->nb = pos->nb * ia->tt_ant;
+  while (++ia->tt_ant < pos->nb_ant)
+    if (add_ant(ant, pos, ia->tt_ant) == FAILURE)
+      return (FAILURE);
+  ant->nb = pos->nb_ant * ia->tt_ant;
   migration_loop(pos, ia, ant);
   clean_all(root, pos, ant);
   return (SUCCESS);
