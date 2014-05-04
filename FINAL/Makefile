@@ -7,19 +7,19 @@
 ## Started on  Sun Jan  5 08:34:59 2014 chalie_a
 ##
 
-CC	=	gcc -Ofast
+CC	=	gcc -Ofast -g3
 
 NAME	=	lem_in
 
 G_NAME	=	visu_hex
 
-SRC	=	src/clean_all.c			\
-		src/main.c
+SRC	=		src/main.c		\
 
 GRAPH	=	src/GRAPH/main_graph.c		\
 		src/GRAPH/graph.c		\
 		src/GRAPH/keyboard.c		\
-		src/GRAPH/display.c
+		src/GRAPH/display.c			\
+		src/GRAPH/graph_parsing.c
 
 ALGO	=	src/ALGO/grid_workflow.c	\
 		src/ALGO/shared.c		\
@@ -34,8 +34,8 @@ MGR	=	src/MIGRATION/migration_loop.c	\
 PARSER	=	src/PARSER/add_elem.c		\
 		src/PARSER/affectation.c	\
 		src/PARSER/link_rooms.c		\
-		src/PARSER/read_data.c
-
+		src/PARSER/read_data.c		\
+		src/PARSER/clean_all.c
 LIB	=	lib/gnl.c			\
 		lib/to_tab.c			\
 		lib/strmatch.c			\

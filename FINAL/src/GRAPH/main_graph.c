@@ -5,7 +5,7 @@
 ** Login   <abel@chalier.me>
 ** 
 ** Started on  Wed Apr 16 22:50:26 2014 chalie_a
-** Last update Sun May  4 03:18:52 2014 beau_v
+** Last update Sun May  4 11:40:39 2014 chalie_a
 */
 
 #include <stdio.h>
@@ -45,5 +45,6 @@ int		main(int ac, char **av)
   read_data(root, pos, DATA);
   if (!pos->end || !pos->start || !pos->start->name || !pos->end->name)
     return (_ERROR(INV_MAP));
-  return (make_coffee(ac, av, root, pos));
+  make_coffee(ac, av, root, pos);
+  clean_all(root, pos, NULL);
 }

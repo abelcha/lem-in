@@ -5,7 +5,7 @@
 ** Login   <victor.beau@epitech.eu>
 ** 
 ** Started on  Sun May  4 02:15:54 2014 beau_v
-** Last update Sun May  4 03:33:55 2014 beau_v
+** Last update Sun May  4 11:46:44 2014 chalie_a
 */
 
 #include <GL/glut.h>
@@ -86,6 +86,7 @@ int		make_coffee(int argc, char **argv, t_room *room, t_pos *pos)
 {
   root = room;
   p = pos;
+  get_movement();
   glutInit(&argc, argv);
   glutInitWindowSize(WIDTH, HEIGHT);
   glutInitWindowPosition(100, 100);
