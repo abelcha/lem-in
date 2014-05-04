@@ -5,7 +5,6 @@
 ## Login   <chalie_a@epitech.eu>
 ## 
 ## Started on  Sun Jan  5 08:34:59 2014 chalie_a
-## Last update Sat May  3 05:44:08 2014 chalie_a
 ##
 
 CC	=	gcc -Ofast
@@ -17,9 +16,11 @@ G_NAME	=	visu_hex
 SRC	=	src/clean_all.c			\
 		src/main.c
 
-GRAPH=	src/GRAPH/main_graph.c				\
-		src/GRAPH/graph.c				\
-		src/GRAPH/shits.c
+GRAPH	=	src/GRAPH/main_graph.c		\
+		src/GRAPH/graph.c		\
+		src/GRAPH/keyboard.c		\
+		src/GRAPH/display.c
+
 ALGO	=	src/ALGO/grid_workflow.c	\
 		src/ALGO/shared.c		\
 		src/ALGO/rev_swarm_int.c	\
@@ -30,7 +31,7 @@ MGR	=	src/MIGRATION/migration_loop.c	\
 		src/MIGRATION/start_migration.c	\
 		src/MIGRATION/ant_ia.c
 
-PARSER=	src/PARSER/add_elem.c		\
+PARSER	=	src/PARSER/add_elem.c		\
 		src/PARSER/affectation.c	\
 		src/PARSER/link_rooms.c		\
 		src/PARSER/read_data.c

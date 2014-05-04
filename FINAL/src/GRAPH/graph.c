@@ -1,7 +1,15 @@
+/*
+** graph.c for Project-Master in /home/beau_v/Test/Rendu_lem_in/lem-in/FINAL/src/GRAPH
+** 
+** Made by beau_v
+** Login   <victor.beau@epitech.eu>
+** 
+** Started on  Sun May  4 02:15:54 2014 beau_v
+** Last update Sun May  4 03:33:55 2014 beau_v
+*/
+
 #include <GL/glut.h>
-#include <stdlib.h>
 #include <math.h>
-#include <stdio.h>
 #include "lem_in.h"
 #include "graph.h"
 
@@ -14,177 +22,23 @@ static const GLfloat	mat_diffuse[] = {0.8f, 0.8f, 0.8f, 1.0f};
 static const GLfloat	mat_specular[] = {1.0f, 1.0f, 1.0f, 1.0f};
 static const GLfloat	high_shininess[] = {100.0f};
 
-# define ROW	200
-# define MOD    p->nb * 2
-
-
 t_room		*root;
 t_pos		*p;
-int		window;
-float		xpos = 0;
-float		ypos = 0;
-float		zpos = 0;
-float		xrot = 0;
-float		yrot = 0;
-float		angle = 0.0;
 
-void camera(void)
-{
-  glRotatef(xrot, 1.0, 0.0, 0.0);
-  glRotatef(yrot, 0.0, 1.0, 0.0);
-  glTranslated(-xpos, -ypos, -zpos);
-}
-
-void reshape(int w, int h)
+static void	reshape(int w, int h)
 {
   if (h == 0)
     h = 1;
   glViewport(0, 0, (GLsizei)w, (GLsizei)h);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective(60, (GLfloat)w / (GLfloat)h, 1.0, 1000.0);
+  gluPerspective(45, (GLfloat)w / (GLfloat)h, 1.0, 1000.0);
   glMatrixMode(GL_MODELVIEW);
 }
 
-void drawPipeD(float x1,float y1, float z1, float x2, float y2, float z2)
+static void	create_good_env()
 {
-  float a1,a2,a3; // mogen niet 0 worden -> exceptie!
-  float o1,o2,o3;
-  float pipeLenght;
-
-  o1= x2-x1;
-  o2= y2-y1;
-  o3= z2-z1;
-  pipeLenght = sqrt(o1*o1+o2*o2+o3*o3);
-  o1=o1/pipeLenght;// normalize
-  o2=o2/pipeLenght;
-  o3=o3/pipeLenght;
-  a1 = o1; // normalized cylinder vector + normalized target vector
-  a2 = o2;
-  a3 = 1+o3;
-
-  if ((a1 == 0.0) && (a2 == 0.0) && (a3 == 0.0) )// exception!
-    a1 = 1;
-
-  GLUquadricObj *cylinder1;
-
-  cylinder1 = gluNewQuadric();
-  gluQuadricDrawStyle(cylinder1, GLU_LINE);
-
-  glColor3d(0,0,1);
-  glPushMatrix();
-  glTranslated(x1,y1,z1);
-  glRotatef(180,a1,a2,a3);
-  gluCylinder(cylinder1,0.1,0.1,pipeLenght,10,1);
-  glPopMatrix();
-  // draw endpoints
-  glPushMatrix();
-  glTranslated(x1,y1,z1);
-  glutSolidSphere(0.3,12,12);
-  glPopMatrix();
-
-  glPushMatrix();
-  glTranslated(x2,y2,z2);
-  glutSolidSphere(0.3,12,12);  
-  glPopMatrix();
-}
-
-void		draw_cylindre(GLUquadric *quadric, t_room *tmp)
-{
-  int	i = 0;
-  float	x_p;
-  float	y_p;
-  float	z_p;
-  float	z;
-  float	x;
-  float	y;
- 
-  drawPipeD((float)tmp->x, (float)tmp->y, (float)tmp->z, (float)tmp->prev->x, 
-	    (float)tmp->prev->y, (float)tmp->prev->z);
-	   return ;
-  z_p = ((float)tmp->prev->z - (float)tmp->z) / ROW;
-  x_p = ((float)tmp->prev->x - (float)tmp->x) / ROW;
-  y_p = ((float)tmp->prev->y - (float)tmp->y) / ROW;
-  x = (float)tmp->x;
-  y = (float)tmp->y;
-  z = (float)tmp->z;
-  while (i++ < ROW)
-    {
-      glPushMatrix();
-      glTranslated(x, y, z);
-      glColor4d(165.0, 82.0, 76.0, 0.0);
-      gluQuadricDrawStyle(quadric, GLU_FILL);
-      //gluCylinder(quadric, 2, 2, 10, 20, 20);
-      //gluDisk(quadric, 0.1, 0.3, 10, 10);
-      if (i % 3 != 0)
-       gluSphere(quadric, 0.1, 10, 10);
-      //gluCylinder(quadric, 1, 2, 1, 2, 20);
-      glPopMatrix();
-      x = x + x_p;
-      y = y + y_p;
-      z = z + z_p;
-    }
-}
-
-#define GREEN	0.0, 10.0, 1.0, 0.0
-#define RED	10.0, 0.0, 1.0, 0.0
-#define BLUE	0.0, 0.0, 10.0, 0.0
-#define S_SIZE	(15 % ((MOD) / 9))
-void		draw_sphere(t_room *tmp, GLUquadric *quadric)
-{
-  glPushMatrix();
-  glTranslated(tmp->x, tmp->y , tmp->z);
-  if (tmp == p->end)
-    glColor4d(RED);
-  else if (tmp == p->start)
-    glColor4d(BLUE);
-  else
-    glColor4d(GREEN);
-  gluQuadricDrawStyle(quadric, GLU_SILHOUETTE);
-  gluSphere(quadric, S_SIZE, 40, 40);
-  glPopMatrix();
-}
-
-void		draw_quadrics()
-{
-  GLUquadric	*quadric;
-  int		i = 0;
-  float		x = 0;
-  t_room	*tmp;
-  int		prev_x;
-  int		prev_y;
-  int		flag;
-
-  quadric = gluNewQuadric();
-  tmp = root;
-  while ((tmp = tmp->next) != root)
-    {
-      tmp->x %= MOD;
-      tmp->y %= MOD;
-      if (tmp->z == 0)
-	tmp->z = my_rand(0, MOD);
-      draw_sphere(tmp,  quadric);
-      if (tmp != root->next)
-     	draw_cylindre(quadric, tmp);
-    }
-  /*  glPushMatrix();
-  glTranslated(0, 1, 1.0);
-  glColor4d(1.0, 1.0, 1.0, 1.0);
-  gluQuadricDrawStyle(quadric, GLU_LINE);
-  gluSphere(quadric, 10, 40, 40);
-  glPopMatrix();
-  glPushMatrix();
-  glTranslated(1, 0.9, 0.0);
-  glColor4d(1.0, 1.0, 1.0, 1.0);
-  gluQuadricDrawStyle(quadric, GLU_LINE);
-  gluCylinder(quadric, 2, 2, 10, 20, 20);
-  glPopMatrix();*/
-  gluDeleteQuadric(quadric);
-}
-
-void		create_good_env()
-{
-  glClearColor(0, 0, 0, 0);
+  glClearColor(0, 0, 0, 1);
   glEnable(GL_CULL_FACE);
   glCullFace(GL_BACK);
   glEnable(GL_DEPTH_TEST);
@@ -203,83 +57,42 @@ void		create_good_env()
   glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
 }
 
-
-static void	display(void)
+static void	display()
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
-
   camera();
   create_good_env();
-  draw_quadrics();
-
+  draw_quadrics(root, p);
   glutSwapBuffers();
-  angle++;
 }
 
-void	keyboard(unsigned char key, int x, int y)
+void		init_camera_pos()
 {
-  float xrotrad;
-  float yrotrad;
+  int		i;
 
-  if (key == 's')
-    {
-      xrot += 1;
-      if (xrot >360)
-	xrot -= 360;
-    }
-  if (key == 'z')
-    {
-      xrot -= 1;
-      if (xrot < -360)
-	xrot += 360;
-    }
-  if (key == 'e')
-    {
-      yrotrad = (yrot / 180 * 3.141592654f);
-      xrotrad = (xrot / 180 * 3.141592654f); 
-      xpos = xpos + sin(yrotrad);
-      zpos = zpos - cos(yrotrad);
-      ypos = ypos - sin(xrotrad);
-    }
-  if (key == 'a')
-    {
-      yrotrad = (yrot / 180 * 3.141592654f);
-      xrotrad = (xrot / 180 * 3.141592654f); 
-      xpos = xpos - sin(yrotrad);
-      zpos = zpos + cos(yrotrad);
-      ypos = ypos + sin(xrotrad);
-    }
-  if (key == 'd')
-    {
-      yrot += 1;
-      if (yrot > 360)
-	yrot -= 360;
-    }
-  if (key == 'q')
-    {
-      yrot -= 1;
-      if (yrot < -360)
-	yrot += 360;
-    }
-  if (key == 27)
-    {
-      exit(0);
-    }
+  i = 0;
+  while (i++ < 60)
+    zoom(2);
+  i = 0;
+  while (i++ < 8)
+    rotate(3);
+  i = 0;
+  while (i++ < 6)
+    rotate(2);
 }
 
 int		make_coffee(int argc, char **argv, t_room *room, t_pos *pos)
 {
-  t_ant		**tab;
-
   root = room;
   p = pos;
   glutInit(&argc, argv);
   glutInitWindowSize(WIDTH, HEIGHT);
-  glutInitWindowPosition(30, 30);
+  glutInitWindowPosition(100, 100);
   glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
-  window = glutCreateWindow("Lem-in");
+  glutCreateWindow("Lem-in");
   glutDisplayFunc(display);
+  init_camera_pos();
   glutIdleFunc(display);
   glutReshapeFunc(reshape);
   glutKeyboardFunc(keyboard);
