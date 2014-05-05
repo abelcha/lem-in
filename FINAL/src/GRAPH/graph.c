@@ -5,7 +5,7 @@
 ** Login   <victor.beau@epitech.eu>
 ** 
 ** Started on  Sun May  4 02:15:54 2014 beau_v
-** Last update Sun May  4 23:30:22 2014 beau_v
+** Last update Mon May  5 09:39:01 2014 chalie_a
 */
 
 #include <GL/glut.h>
@@ -75,11 +75,11 @@ static void		display()
   camera();
   create_good_env();
   draw_quadrics(root, p);
-  if (timer_flag == 42)
+    if (timer_flag == 42)
     if (!move->next->r1)
       exit(0);
     else
-      move = move->next;
+    move = move->next;
   draw_ants(move->r1, move->r2);
   glFlush();
   glutSwapBuffers();

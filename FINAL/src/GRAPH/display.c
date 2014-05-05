@@ -5,7 +5,7 @@
 ** Login   <victor.beau@epitech.eu>
 ** 
 ** Started on  Sun May  4 02:17:06 2014 beau_v
-** Last update Sun May  4 23:17:59 2014 beau_v
+** Last update Mon May  5 09:47:19 2014 chalie_a
 */
 
 #include <GL/glut.h>
@@ -13,7 +13,7 @@
 #include "lem_in.h"
 #include "graph.h"
 
-# define MOD    p->nb_ant * 2
+# define MOD    p->nb_room * 2
 # define S_SIZE	(15 % ((MOD) / 9))
 
 extern int	 yolo;
@@ -47,6 +47,8 @@ static void	init_cylinder(t_room *r1, t_room *r2, int flag)
 {
   t_coord	coord;
 
+  if (!r1 || !r2)
+    return ;
   coord.o1 = (float)r2->x - (float)r1->x;
   coord.o2 = (float)r2->y - (float)r1->y;
   coord.o3 = (float)r2->z - (float)r1->z;
@@ -91,6 +93,15 @@ void		draw_ants(t_room *r1, t_room *r2)
   init_cylinder(r1, r2, 2);
 }
 
+int		get_cylinder(t_room *actual)
+{
+  t_node	*tmp;
+
+  tmp = actual->links;
+  while ((tmp = tmp->next) != actual->links)
+    init_cylinder(actual,tmp->node , 1);
+}
+
 void		draw_quadrics(t_room *root, t_pos *p)
 {
   t_room	*tmp;
@@ -103,7 +114,6 @@ void		draw_quadrics(t_room *root, t_pos *p)
       if (tmp->z == 0)
 	tmp->z = my_rand(0, MOD);
       draw_sphere(tmp, p);
-      if (tmp != root)
-	init_cylinder(tmp, tmp->prev, 1);
+      get_cylinder(tmp);
     }
 }
